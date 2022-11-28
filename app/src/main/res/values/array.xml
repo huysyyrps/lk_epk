@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="GATE">
+        <item>自动</item>
+        <item>单闸门 </item>
+        <item>双闸门 </item>
+    </string-array>
+
+    <string-array name="LEAVE">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="MATERIALTYPE">
+        <item>试块 3240</item>
+        <item>碳钢 3254</item>
+        <item>不锈钢 3163</item>
+        <item>铸铁I 3200</item>
+        <item>铸铁II 2800</item>
+        <item>铸铁III 2200</item>
+        <item>铝合金 3190</item>
+        <item>铜 2240</item>
+        <item>金 1200</item>
+        <item>银 1500</item>
+        <item>镍 2960</item>
+    </string-array>
+
+
+    <string-array name="WAVETYPE">
+        <item>射频波</item>
+        <item>正半波</item>
+        <item>负半波</item>
+    </string-array>
+
+    <string-array name="RANGEADD">
+        <item>1X</item>
+        <item>2X</item>
+        <item>3X</item>
+    </string-array>
+
+    <string-array name="weld">
+        <item>圆形缺陷</item>
+        <item>条形缺陷</item>
+        <item>未熔合</item>
+        <item>咬边</item>
+        <item>错边</item>
+    </string-array>
+
+    <string-array name="select_count">
+        <item>自动计算</item>
+        <item>手动计算</item>
+    </string-array>
+</resources>

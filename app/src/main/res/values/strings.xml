@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">LK_EPK</string>
+    <string name="scan_a">A扫描</string>
+    <string name="scan_b">B扫描</string>
+    <string name="scan_a_back">数回A</string>
+    <string name="scan_b_back">数回B</string>
+    <string name="calibration">校准</string>
+    <string name="device_power">仪器电量</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="work_temp">请输入温度(-200~800)</string>
+
+    <string name="btn_sure">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="right_write_work_temp">请输入正确温度</string>
+</resources>

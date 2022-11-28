@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 自定义TextView属性   -->
+    <style name="tvTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/theme_color</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
+    <!-- 自定义BaseButton属性   -->
+    <style name="BaseButton">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13dp</item>
+        <item name="lineHeight">13dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+    </style>
+
+    <!-- 自定义横向分割线属性   -->
+    <style name="HLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/theme_color</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+    </style>
+
+    <!-- 自定义Button控件的属性-->
+    <declare-styleable name="BaseButton">
+        <!-- 背景颜色-->
+        <attr name="bg_color" format="color" />
+        <!-- 圆角大小-->
+        <attr name="bg_corner" format="dimension" />
+    </declare-styleable>
+</resources>
