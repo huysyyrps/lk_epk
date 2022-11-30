@@ -4,6 +4,9 @@ pluginManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/releases/'
+        }
     }
 }
 dependencyResolutionManagement {
@@ -12,6 +15,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/releases/'
+        }
     }
 }
 rootProject.name = "LK_EPK"

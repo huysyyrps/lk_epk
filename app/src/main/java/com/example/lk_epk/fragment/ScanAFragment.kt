@@ -8,19 +8,17 @@ import com.afollestad.materialdialogs.list.customListAdapter
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
-import com.example.lk_epk.util.BaseFragment
-import com.example.lk_epk.util.Constant
-import com.example.lk_epk.util.DialogCallBack
-import com.example.lk_epk.util.showToast
+import com.example.lk_epk.util.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.dialog_item_header.*
 import kotlinx.android.synthetic.main.fragment_scan_a.*
 
+
 class ScanAFragment : BaseFragment(), View.OnClickListener {
-    private lateinit var activityContext : Context
     private lateinit var dialog : MaterialDialog
     private lateinit var btnTag : String
     private lateinit var dataList: List<String>
+//    private lateinit var okManager: IConnectionManager
     override fun getLayout(): Int {
         return R.layout.fragment_scan_a
     }
@@ -40,10 +38,11 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
         btnWorkTemp.setOnClickListener(this)
         //参数初始化
         btnInitialize.setOnClickListener(this)
+
     }
 
-    fun getActivityContext(context: Context) {
-        activityContext = context
+    fun test(context: Context) {
+        "${"1111"}".showToast(MyApplication.context)
     }
 
     //初始化数据
@@ -169,10 +168,41 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
     //发送数据
     private fun sendData(s: String, data: String) {
         data.showToast(MyApplication.context)
+        if (manager.isConnect){
+            manager.send { "[CC AB CD 12 12]" .toByteArray()}
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         dialog.dismiss()
     }
+
+//    //连接状态
+//    override fun connectionState(tag: Int) {
+//        when(tag){
+//            1 -> toastConnectionState(resources.getString(R.string.connect_success))
+//            2 -> toastConnectionState(resources.getString(R.string.connect_discon))
+//            3 -> toastConnectionState(resources.getString(R.string.connect_fail))
+//        }
+//    }
+    //读取返回数据
+    override fun backData() {
+        TODO("Not yet implemented")
+    }
+    //写入的数据
+    override fun writeData(str: String) {
+        LogUtil.i("ScanAFragment",str)
+    }
+//    //tost链接状态和相应处理
+//    private fun toastConnectionState(state:String){
+//        if (state==resources.getString(R.string.connect_fail)){
+//            manager.disconnect();//断开连接
+//            manager.unRegisterReceiver(txglqSockerAdapter)// 取消注册监听
+//            "${resources.getString(R.string.connect_fail1)}".showToast(MyApplication.context)
+//        }
+//        if (state==resources.getString(R.string.connect_success)){
+//            state.showToast(MyApplication.context)
+//        }
+//    }
 }

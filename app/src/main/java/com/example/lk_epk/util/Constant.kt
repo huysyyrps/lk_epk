@@ -10,4 +10,8 @@ object Constant {
     const val AUDIOSPEED = "audioSpeed"//声速
     const val INITIALIZE = "initialize"//参数初始化
 
+    const val TAG_ONE = 1
+    const val TAG_TWO = 2
+    const val TAG_THREE = 3
+    const val TAG_TEN = 10
 }

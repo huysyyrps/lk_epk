@@ -20,7 +20,6 @@ open class BaseActivity : AppCompatActivity() {
     private fun hideStatusBar() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
     }
 
     override fun onDestroy() {
