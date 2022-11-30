@@ -18,7 +18,6 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
     private lateinit var dialog : MaterialDialog
     private lateinit var btnTag : String
     private lateinit var dataList: List<String>
-//    private lateinit var okManager: IConnectionManager
     override fun getLayout(): Int {
         return R.layout.fragment_scan_a
     }
@@ -39,10 +38,6 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
         //参数初始化
         btnInitialize.setOnClickListener(this)
 
-    }
-
-    fun test(context: Context) {
-        "${"1111"}".showToast(MyApplication.context)
     }
 
     //初始化数据
@@ -178,14 +173,6 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
         dialog.dismiss()
     }
 
-//    //连接状态
-//    override fun connectionState(tag: Int) {
-//        when(tag){
-//            1 -> toastConnectionState(resources.getString(R.string.connect_success))
-//            2 -> toastConnectionState(resources.getString(R.string.connect_discon))
-//            3 -> toastConnectionState(resources.getString(R.string.connect_fail))
-//        }
-//    }
     //读取返回数据
     override fun backData() {
         TODO("Not yet implemented")
@@ -194,15 +181,5 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
     override fun writeData(str: String) {
         LogUtil.i("ScanAFragment",str)
     }
-//    //tost链接状态和相应处理
-//    private fun toastConnectionState(state:String){
-//        if (state==resources.getString(R.string.connect_fail)){
-//            manager.disconnect();//断开连接
-//            manager.unRegisterReceiver(txglqSockerAdapter)// 取消注册监听
-//            "${resources.getString(R.string.connect_fail1)}".showToast(MyApplication.context)
-//        }
-//        if (state==resources.getString(R.string.connect_success)){
-//            state.showToast(MyApplication.context)
-//        }
-//    }
+
 }

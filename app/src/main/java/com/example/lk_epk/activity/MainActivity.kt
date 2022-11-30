@@ -19,11 +19,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         bv_battery.BatteryView()
         bv_battery.setProgress(50)
         replaceFragment(ScanAFragment())
-        ivConnect.setOnClickListener(this)
+        linConnect.setOnClickListener(this)
     }
     private fun replaceFragment(fragment: Fragment) {
-//        val scanAFragment = fragment as ScanAFragment
-//        scanAFragment.getActivityContext(this)
         selectFragment = fragment as ScanAFragment
         selectFragment.getActivityContext(this)
         val fragmentManager = supportFragmentManager
@@ -34,9 +32,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.ivConnect ->{
+            R.id.linConnect ->{
                 if (selectFragment.manager.isConnect){
-                    resources.getString(R.string.connect_success).showToast(MyApplication.context)
+                    resources.getString(R.string.connect_succeeded).showToast(MyApplication.context)
                 }else{
                     selectFragment.connectSocket()
                 }
