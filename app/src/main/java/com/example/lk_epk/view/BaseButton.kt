@@ -40,6 +40,8 @@ class BaseButton : AppCompatButton {
         val bgColor = typedArray.getColor(R.styleable.BaseButton_bg_color, default)
         //获取设置的圆角大小
         val buttonCorner = typedArray.getDimensionPixelSize(R.styleable.BaseButton_bg_corner, 0)
+        //设置按钮是否可以店家
+        val buttonclient = typedArray.getBoolean(R.styleable.BaseButton_bg_client, true)
 
         //生成圆角图片
         val bgcDrawable = GradientDrawable()
@@ -59,9 +61,10 @@ class BaseButton : AppCompatButton {
 
         //设置点击后 变暗效果
         val stateListDrawable = StateListDrawable()
-        stateListDrawable.addState(intArrayOf(android.R.attr.state_pressed), layerDrawable)
+        if (buttonclient){
+            stateListDrawable.addState(intArrayOf(android.R.attr.state_pressed), layerDrawable)
+        }
         stateListDrawable.addState(intArrayOf(), bgcDrawable)
-
         background = stateListDrawable
         typedArray.recycle()
     }

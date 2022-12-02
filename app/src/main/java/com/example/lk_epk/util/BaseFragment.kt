@@ -39,6 +39,7 @@ abstract class BaseFragment : Fragment(), SocketBack {
         //初始化控件
         initView()
         initData()
+
         //链接socket
         connectSocket()
     }
@@ -99,19 +100,14 @@ abstract class BaseFragment : Fragment(), SocketBack {
 
     //链接socket
     fun connectSocket() {
-        ProgressDialogUtil.startLoad(activityContext,resources.getString(R.string.connect_loding))
-        var connectionInfo = ConnectionInfo("172.16.20.5", 5005)
-        val builder = OkSocketOptions.Builder()
-        //设置重连
-        builder.setReconnectionManager(OkSocketOptions.getDefault().reconnectionManager)
-        builder.setPulseFeedLoseTimes(2)
-        builder.setConnectTimeoutSecond(TAG_TEN)
-        //调用OkSocket,开启这次连接的通道,拿到通道Manager
-        manager = OkSocket.open(connectionInfo)
-        manager.option(builder.build());
-        manager.registerReceiver(txglqSockerAdapter)
-        //调用通道进行连接
-        manager.connect()
+        manager = OkSocketManager.manager
+        if (::manager.isInitialized&&manager.isConnect){
+            resources.getString(R.string.connect_succeeded).showToast(MyApplication.context)
+        }else{
+            manager.registerReceiver(txglqSockerAdapter)
+            //调用通道进行连接
+            manager.connect()
+        }
     }
 
     //初始化布局

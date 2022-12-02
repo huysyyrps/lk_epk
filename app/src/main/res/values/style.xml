@@ -37,6 +37,8 @@
         <attr name="bg_color" format="color" />
         <!-- 圆角大小-->
         <attr name="bg_corner" format="dimension" />
+        <!-- 是否可以点击-->
+        <attr name="bg_client" format="boolean" />
     </declare-styleable>
 
     <!-- 加载滚动条样式 -->

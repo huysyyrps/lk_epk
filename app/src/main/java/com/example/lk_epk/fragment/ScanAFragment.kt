@@ -1,6 +1,6 @@
 package com.example.lk_epk.fragment
 
-import android.content.Context
+import android.graphics.Color
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
@@ -9,6 +9,9 @@ import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
 import com.example.lk_epk.util.*
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.dialog_item_header.*
 import kotlinx.android.synthetic.main.fragment_scan_a.*
@@ -18,6 +21,7 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
     private lateinit var dialog : MaterialDialog
     private lateinit var btnTag : String
     private lateinit var dataList: List<String>
+    private var landList: ArrayList<Entry> = ArrayList()
     override fun getLayout(): Int {
         return R.layout.fragment_scan_a
     }
@@ -37,11 +41,40 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
         btnWorkTemp.setOnClickListener(this)
         //参数初始化
         btnInitialize.setOnClickListener(this)
-
+        LineChartSetting.SettingLineChart(lineChart)
     }
 
     //初始化数据
     override fun initData() {
+        val data = arrayOf(13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,
+            -17,15,-7,15,-7,15,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,-7,0,0,0,0,2,-17,15,-7,15,-7,15,)
+        for(i in 0..data.size-1){
+            landList.add(Entry(i.toFloat(), data[i].toFloat()))
+        }
+        var lineDataSet = LineDataSet(landList, "A扫")
+        //不绘制数据
+        lineDataSet.setDrawValues(false)
+        //不绘制圆形指示器
+        lineDataSet.setDrawCircles(false)
+        //线模式为圆滑曲线（默认折线）
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.setColor(resources.getColor(R.color.theme_color))
+
+        //将数据集添加到数据 ChartData 中
+        val lineData = LineData(lineDataSet)
+        //将数据添加到图表中
+        lineChart.setData(lineData)
+//        lineChart.setVisibleXRangeMaximum(200f)//设置x轴最多显示数据条数，（要在设置数据源后调用，否则是无效的）
     }
 
     override fun onClick(v: View?){
@@ -170,12 +203,14 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        dialog.dismiss()
+        if (::dialog.isInitialized){
+            dialog.dismiss()
+        }
     }
 
     //读取返回数据
     override fun backData() {
-        TODO("Not yet implemented")
+
     }
     //写入的数据
     override fun writeData(str: String) {

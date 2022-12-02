@@ -22,6 +22,7 @@
                 tools:ignore="ContentDescription,RtlHardcoded" />
 
         <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tbLayout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -31,26 +32,31 @@
                 app:tabTextColor="@color/theme_color">
 
             <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tbScanA"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/scan_a" />
 
             <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tbScanB"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/scan_b" />
 
             <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tbScanBackA"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/scan_a_back" />
 
             <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tbScanBackB"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/scan_b_back" />
 
             <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tbAlign"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/calibration" />
