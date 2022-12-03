@@ -1,0 +1,107 @@
+package com.example.lk_epk.util
+
+import android.os.Environment
+import android.util.Log
+import com.example.lk_epk.MyApplication
+import com.example.lk_epk.R
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+
+object FileUtil {
+    //创建文件夹
+    fun creatFile(path: String, fileName: String): File? {
+        var newFile: File? = null
+        Log.i("TAG:", "文件创建状态 1")
+        if (path != "") {
+            try {
+                newFile = File(path + File.separator + fileName)
+                if (!newFile.exists()) {
+                    val isSuccess = newFile.createNewFile()
+                    Log.i("TAG:", "文件创建状态--->$isSuccess")
+                    Log.i("TAG:", "文件所在路径：$newFile")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return newFile
+    }
+
+    //写入文件
+    open fun writeData(path: String?, fileData: String) : String{
+        try {
+            if (Environment.getExternalStorageState() == "mounted") {
+                val file = File(path)
+                val out = FileOutputStream(file, false)
+                out.write(fileData.toByteArray(charset("UTF-8")))
+                Log.i("XXXXXX:", "将数据写入到文件中：$fileData")
+                out.close()
+                return MyApplication.context.resources.getString(R.string.save_success)
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            return e.toString()
+        }
+        return ""
+    }
+
+    //判断文件是否存在
+    fun isFileExists(fileName: String?): Boolean {
+        val file = File(fileName)
+        return file.exists()
+    }
+    //判断文件内容是否为空
+    fun hasFileExists(folderPath: String?): Boolean {
+        val file = File(folderPath)
+        if (!file.exists()) {
+            return false
+        }
+        val files = file.listFiles()
+        if (files != null) {
+            return files.isNotEmpty()
+        }
+        return false
+    }
+
+    //获取文件名字
+    fun getFilesAllName(dataFiles: ArrayList<File>, path: String?) {
+        val file = File(path)
+        val files = file.listFiles()
+        if (files == null) {
+            Log.e("error", "空目录")
+        } else if (dataFiles != null) {
+            for (i in dataFiles.indices.reversed()) {
+                dataFiles.removeAt(i)
+            }
+            for (file in files) {
+                dataFiles.add(file)
+            }
+        }
+    }
+
+    //读取文件内容
+    fun readFileContent(path: String?): String? {
+        try {
+            if (Environment.getExternalStorageState() != "mounted") {
+                return null
+            }
+            val file = File(path)
+            val buffer = ByteArray(32768)
+            val fis = FileInputStream(file)
+            val sb = StringBuffer("")
+            while (true) {
+                val len = fis.read(buffer)
+                if (len > 0) {
+                    sb.append(String(buffer, 0, len))
+                } else {
+                    fis.close()
+                    return sb.toString()
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+}

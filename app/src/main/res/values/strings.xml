@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LK_EPK</string>
+    <string name="app_name">鲁科检测</string>
     <string name="scan_a">A扫描</string>
     <string name="scan_b">B扫描</string>
     <string name="scan_a_back">数回A</string>
@@ -19,4 +19,5 @@
     <string name="connect_fail">连接失败</string>
     <string name="connect_loding">连接中....</string>
     <string name="connect_fail1">连接失败请检测设备是否正常开启或点击右上角信号图标重新链接</string>
+    <string name="save_success">存储成功</string>
 </resources>

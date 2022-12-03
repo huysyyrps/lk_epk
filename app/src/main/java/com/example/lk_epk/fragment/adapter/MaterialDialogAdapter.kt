@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lk_epk.R
 import com.example.lk_epk.util.DialogCallBack
+import com.example.lk_epk.view.BaseButton
+import java.io.File
 import java.util.*
 
-class MaterialDialogAdapter(private val placeList: List<String>, private val dialogCallBack: DialogCallBack) : RecyclerView.Adapter<MaterialDialogAdapter.ViewHolder>() {
+class MaterialDialogAdapter<T>(private val tag: String, private val placeList: List<T>, private val dialogCallBack: DialogCallBack) : RecyclerView.Adapter<MaterialDialogAdapter<T>.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvData: TextView = view.findViewById(R.id.textView)
+        val bsButton: BaseButton = view.findViewById(R.id.bsButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,9 +22,16 @@ class MaterialDialogAdapter(private val placeList: List<String>, private val dia
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val place = placeList[position]
-        holder.tvData.text = place
-        holder.tvData.setOnClickListener {
+        var place = ""
+        if (tag == "backData"){
+            var file = File(placeList[position].toString())
+            place = placeList[position].toString()
+            holder.bsButton.text = file.name.toString()
+        }else {
+            place = placeList[position].toString()
+            holder.bsButton.text = place
+        }
+        holder.bsButton.setOnClickListener {
             dialogCallBack.backData(place)
         }
     }

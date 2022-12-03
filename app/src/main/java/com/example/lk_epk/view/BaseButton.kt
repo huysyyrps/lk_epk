@@ -8,6 +8,7 @@ import android.graphics.drawable.StateListDrawable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 
 /**
@@ -40,7 +41,7 @@ class BaseButton : AppCompatButton {
         val bgColor = typedArray.getColor(R.styleable.BaseButton_bg_color, default)
         //获取设置的圆角大小
         val buttonCorner = typedArray.getDimensionPixelSize(R.styleable.BaseButton_bg_corner, 0)
-        //设置按钮是否可以店家
+        //设置按钮是否可以点击
         val buttonclient = typedArray.getBoolean(R.styleable.BaseButton_bg_client, true)
 
         //生成圆角图片
@@ -52,7 +53,7 @@ class BaseButton : AppCompatButton {
 
         //生成一张半透明的灰色图片 #31000000为遮罩颜色 可自定义
         val bgcDrawable1 = GradientDrawable()
-        bgcDrawable1.setColor(Color.parseColor("#ff4c41"))
+        bgcDrawable1.setColor(MyApplication.context.getColor(R.color.style_red))
         bgcDrawable1.cornerRadius = buttonCorner.toFloat()
 
         //生成一个图层叠加的图片 上面用灰色盖住 模拟变暗效果

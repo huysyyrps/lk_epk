@@ -9,6 +9,7 @@ object Constant {
     const val WORKTEMP = "workTemp"//工作温度
     const val AUDIOSPEED = "audioSpeed"//声速
     const val INITIALIZE = "initialize"//参数初始化
+    const val ADATA_PATH = "LKData"
 
     const val TAG_ONE = 1
     const val TAG_TWO = 2
