@@ -11,6 +11,10 @@ object Constant {
     const val INITIALIZE = "initialize"//参数初始化
     const val ADATA_PATH = "LKData"
 
+    const val STATUS_CONNECT_ERROR = -1
+    const val STATUS_CONNECT_CLOSED = 0
+    const val STATUS_CONNECT_SUCCESS = 1
+
     const val TAG_ONE = 1
     const val TAG_TWO = 2
     const val TAG_THREE = 3

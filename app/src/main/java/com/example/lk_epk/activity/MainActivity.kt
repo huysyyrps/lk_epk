@@ -3,6 +3,8 @@ package com.example.lk_epk.activity
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.fragment.*
@@ -16,12 +18,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), View.OnClickListener {
     private lateinit var selectFragment: BaseFragment
+    private lateinit var fragmentManager: FragmentManager
+    private val mFragmentList = ArrayList<Fragment>()
+    private val mFragmentTagList = arrayOf("ScanAFragment", "ScanBFragment", "ScanBackAFragment", "AlignFragment", "AlignFragment")
+    private lateinit var mCurrentFragmen: Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bv_battery.BatteryView()
         bv_battery.setProgress(50)
-        replaceFragment(ScanAFragment())
         linConnect.setOnClickListener(this)
 
         tbLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -31,31 +37,57 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+        mFragmentList.add(0, ScanAFragment())
+        mFragmentList.add(1, ScanBFragment())
+        mFragmentList.add(2, ScanBackAFragment())
+        mFragmentList.add(3, ScanBackBFragment())
+        mFragmentList.add(4, AlignFragment())
+        mCurrentFragmen = mFragmentList[0];
+        // 初始化首次进入时的Fragment
+        fragmentManager = supportFragmentManager;
+        val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+        transaction.add(R.id.flFragment, mCurrentFragmen, mFragmentTagList[0])
+        transaction.commitAllowingStateLoss()
+
+        selectFragment = mCurrentFragmen as BaseFragment
+        selectFragment.getActivityContext(this)
     }
 
     private fun tabChange(tab: TabLayout.Tab) {
         val position = tab.position
         if (position == 0) {
-            replaceFragment(ScanAFragment())
+            switchFragment(mFragmentList[0], mFragmentTagList[0]);
         } else if (position == 1) {
-            replaceFragment(ScanBFragment())
+            switchFragment(mFragmentList[1], mFragmentTagList[1]);
         } else if (position == 2) {
-            replaceFragment(ScanBackAFragment())
+            switchFragment(mFragmentList[2], mFragmentTagList[2]);
         } else if (position == 3) {
-            replaceFragment(ScanBackBFragment())
+            switchFragment(mFragmentList[3], mFragmentTagList[3]);
         } else if (position == 4) {
-            replaceFragment(AlignFragment())
+            switchFragment(mFragmentList[4], mFragmentTagList[4]);
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    // 转换Fragment
+    fun switchFragment(fragment: Fragment, tag: String?) {
         selectFragment = fragment as BaseFragment
         selectFragment.getActivityContext(this)
-        val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.flFragment, fragment)
-        transaction.commit()
+
+        if (mCurrentFragmen !== fragment) {
+            val transaction = fragmentManager.beginTransaction()
+            if (!fragment.isAdded) {
+                // 没有添加过:
+                // 隐藏当前的，添加新的，显示新的
+                transaction.hide(mCurrentFragmen).add(R.id.flFragment, fragment, tag).show(fragment)
+            } else {
+                // 隐藏当前的，显示新的
+                transaction.hide(mCurrentFragmen).show(fragment)
+            }
+            mCurrentFragmen = fragment
+            transaction.commitAllowingStateLoss()
+        }
     }
+
 
     override fun onClick(v: View?) {
         when(v?.id){

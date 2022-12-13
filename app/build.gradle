@@ -62,5 +62,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //权限申请
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+    //NettySocket
+    implementation 'io.netty:netty-all:4.1.38.Final'
 
 }

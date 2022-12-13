@@ -1,6 +1,9 @@
 package com.example.lk_epk.fragment
 
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -8,6 +11,7 @@ import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.entity.ScanABean
 import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
+import com.example.lk_epk.tcp.MessageStateListener
 import com.example.lk_epk.util.*
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -24,6 +28,10 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
     private lateinit var btnTag : String
     private lateinit var dataList: List<String>
     private var landList: ArrayList<Entry> = ArrayList()
+
+    companion object{
+        private const val TAG = "ScanAFragment"
+    }
     override fun getLayout(): Int {
         return R.layout.fragment_scan_a
     }
@@ -578,8 +586,18 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
     //发送数据
     private fun sendData(s: String, data: String) {
         data.showToast(MyApplication.context)
-        if (manager.isConnect){
-            manager.send { "[CC AB CD 12 12]" .toByteArray()}
+        if (!nettyTcpClient.connectStatus) {
+            R.string.no_connect.showToast(MyApplication.context)
+        } else {
+            nettyTcpClient.sendMsgToServer("[CC AB CD 12 12]", object : MessageStateListener {
+                override fun isSendSuccss(isSuccess: Boolean) {
+                    if (isSuccess) {
+                        Log.d(TAG, "Write auth successful")
+                    } else {
+                        Log.d(TAG, "Write auth error")
+                    }
+                }
+            })
         }
     }
 
