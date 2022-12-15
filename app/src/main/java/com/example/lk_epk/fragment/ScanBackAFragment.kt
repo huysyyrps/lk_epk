@@ -106,13 +106,9 @@ class ScanBackAFragment : BaseFragment(), View.OnClickListener {
         lineChart.invalidate()
     }
 
-    //读取返回数据
-    override fun backData() {
+    //服务器返回数据
+    override fun messageResponse(str: String) {
         TODO("Not yet implemented")
-    }
-    //写入的数据
-    override fun writeData(str: String) {
-        LogUtil.i("ScanAFragment",str)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

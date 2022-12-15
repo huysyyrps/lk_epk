@@ -30,6 +30,15 @@
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_marginLeft">5dp</item>
     </style>
+    <!-- 自定义纵向分割线属性   -->
+    <style name="Vine">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/theme_color</item>
+<!--        <item name="android:layout_marginRight">5dp</item>-->
+<!--        <item name="android:layout_marginLeft">5dp</item>-->
+    </style>
+
 
     <!-- 自定义Button控件的属性-->
     <declare-styleable name="BaseButton">
@@ -39,6 +48,15 @@
         <attr name="bg_corner" format="dimension" />
         <!-- 是否可以点击-->
         <attr name="bg_client" format="boolean" />
+    </declare-styleable>
+    <!-- 自定义LinLayout控件的属性-->
+    <declare-styleable name="BaseRelativeLayout">
+        <!-- 背景颜色-->
+        <attr name="bg_relative_color" format="color" />
+        <!-- 圆角大小-->
+        <attr name="bg_relative_corner" format="dimension" />
+        <!-- 是否可以点击-->
+        <attr name="bg_relative_client" format="boolean" />
     </declare-styleable>
 
     <!-- 加载滚动条样式 -->
@@ -60,5 +78,12 @@
         <item name="android:background">@android:color/transparent </item>
         <item name="android:windowBackground"> @android:color/transparent </item>
         <!-- <item name="android:backgroundDimEnabled">true</item> -->
+    </style>
+
+    <style name="button_udadd_style">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@drawable/btn_select</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
     </style>
 </resources>

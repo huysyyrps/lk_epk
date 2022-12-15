@@ -18,14 +18,9 @@ class ScanBackBFragment : BaseFragment(), View.OnClickListener {
     override fun initData() {
     }
 
-
-    //读取返回数据
-    override fun backData() {
+    //服务器返回数据
+    override fun messageResponse(str: String) {
         TODO("Not yet implemented")
-    }
-    //写入的数据
-    override fun writeData(str: String) {
-        LogUtil.i("ScanAFragment",str)
     }
 
     override fun onClick(v: View?) {

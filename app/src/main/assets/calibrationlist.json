@@ -1,0 +1,57 @@
+[
+  {
+    "workpiece": "试块",
+    "temp": "3240",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "碳钢",
+    "temp": "3254",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "不锈钢",
+    "temp": "3163",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "铸铁I",
+    "temp": "3200",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "铸铁II",
+    "temp": "2800",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "铸铁III",
+    "temp": "2200",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "铝合金",
+    "temp": "3190",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "铜",
+    "temp": "2240",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "金",
+    "temp": "1200",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "银",
+    "temp": "1500",
+    "land": "0.0"
+  },
+  {
+    "workpiece": "镍",
+    "temp": "2960",
+    "land": "0.0"
+  }
+]

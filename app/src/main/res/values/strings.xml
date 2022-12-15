@@ -21,4 +21,12 @@
     <string name="no_connect">"未连接,请先连接"</string>
     <string name="connect_fail1">连接失败请检测设备是否正常开启或点击右上角信号图标重新链接</string>
     <string name="save_success">存储成功</string>
+
+    <string name="write_workpipe">请输入材料名称</string>
+    <string name="write_temp">请输入声速 m/s</string>
+    <string name="write_land">请输入声速温度系数</string>
+    <string name="pipe_have">材料及声速系数已存在</string>
+    <string name="remove_sure">您确定要删除此项数据吗？</string>
+    <string name="basisc_no_remove">基础材料及声速不可删除</string>
+    <string name="remove_success">删除成功</string>
 </resources>

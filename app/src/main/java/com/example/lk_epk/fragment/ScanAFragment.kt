@@ -1,9 +1,7 @@
 package com.example.lk_epk.fragment
 
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -12,6 +10,7 @@ import com.example.lk_epk.R
 import com.example.lk_epk.entity.ScanABean
 import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
 import com.example.lk_epk.tcp.MessageStateListener
+import com.example.lk_epk.tcp.NettyClientListener
 import com.example.lk_epk.util.*
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -23,11 +22,12 @@ import kotlinx.android.synthetic.main.fragment_scan_a.*
 import java.util.*
 
 
-class ScanAFragment : BaseFragment(), View.OnClickListener {
+class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<String> {
     private lateinit var dialog : MaterialDialog
     private lateinit var btnTag : String
     private lateinit var dataList: List<String>
     private var landList: ArrayList<Entry> = ArrayList()
+    private lateinit var lineDataSet:LineDataSet
 
     companion object{
         private const val TAG = "ScanAFragment"
@@ -58,388 +58,22 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
 
     //初始化数据
     override fun initData() {
-        val data = arrayOf(
-            13,
-            -20,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-            0,
-            0,
-            0,
-            0,
-            2,
-            27,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -5,
-            15,
-            -7,
-            15,
-            -7,
-            0,
-            0,
-            0,
-            0,
-            2,
-            -17,
-            15,
-            -7,
-            15,
-            -7,
-            15,
-        )
+        val data = arrayOf(13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,
+            0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,
+            -7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,
+            0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,
+            15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,
+            -7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,
+            -20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,
+            15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,
+            13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,
+            -7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,
+            15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15)
         for(i in 0..data.size-1){
             landList.add(Entry(i.toFloat(), data[i].toFloat()))
         }
-        var lineDataSet = LineDataSet(landList, "A扫")
+        lineDataSet = LineDataSet(landList, "A扫")
         //不绘制数据
         lineDataSet.setDrawValues(false)
         //不绘制圆形指示器
@@ -452,6 +86,7 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
         val lineData = LineData(lineDataSet)
         //将数据添加到图表中
         lineChart.setData(lineData)
+        lineChart.notifyDataSetChanged()
 //        lineChart.setVisibleXRangeMaximum(200f)//设置x轴最多显示数据条数，（要在设置数据源后调用，否则是无效的）
     }
 
@@ -601,20 +236,35 @@ class ScanAFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    //服务器返回数据
+    override fun messageResponse(str: String) {
+        LogUtil.i(TAG,str)
+        val data = arrayOf(13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,
+            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,
+            0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15)
+        landList.clear()
+        for(i in 0..data.size-1){
+            landList.add(Entry((landList.size).toFloat(), data[i].toFloat()))
+            lineDataSet = LineDataSet(landList, "A扫")
+            //将数据集添加到数据 ChartData 中
+            val lineData = LineData(lineDataSet)
+            //将数据添加到图表中
+            lineChart.data = lineData
+            lineChart.notifyDataSetChanged()
+            lineChart.invalidate()
+        }
+
+
+//        val listOfStrings = Gson().fromJson(str, mutableListOf<Float>().javaClass)
+//        var list: ArrayList<Float> = Gson().fromJson(str.toString(), object : TypeToken<ArrayList<Float>>() {}.type)
+//        "${list.size}这是".showToast(MyApplication.context)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         if (::dialog.isInitialized){
             dialog.dismiss()
         }
-    }
-
-    //读取返回数据
-    override fun backData() {
-
-    }
-    //写入的数据
-    override fun writeData(str: String) {
-        LogUtil.i("ScanAFragment",str)
     }
 
 }

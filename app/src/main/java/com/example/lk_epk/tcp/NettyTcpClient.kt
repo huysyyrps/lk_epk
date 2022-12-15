@@ -20,12 +20,10 @@ import java.util.concurrent.TimeUnit
  * @FileName:com.safframework.netty4android.client.NettyTcpClient
  * @version: V1.0 <描述当前版本功能>
  */
-class NettyTcpClient private constructor(val host: String, val tcp_port: Int, val index: Int) {
+class NettyTcpClient(val host: String, val tcp_port: Int, val index: Int) {
 
     private lateinit var group: EventLoopGroup
-
     private lateinit var listener: NettyClientListener<String>
-
     private var channel: Channel? = null
 
     /**
@@ -81,30 +79,36 @@ class NettyTcpClient private constructor(val host: String, val tcp_port: Int, va
 
     private fun connectServer() {
         synchronized(this@NettyTcpClient) {
-            var channelFuture: ChannelFuture?=null
-
+            var channelFuture: ChannelFuture? = null
             if (!connectStatus) {
                 isConnecting = true
                 group = NioEventLoopGroup()
                 val bootstrap = Bootstrap().group(group)
-                        .option(ChannelOption.TCP_NODELAY, true)//屏蔽Nagle算法试图
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-                        .channel(NioSocketChannel::class.java as Class<out Channel>?)
-                        .handler(object : ChannelInitializer<SocketChannel>() {
-
-                            @Throws(Exception::class)
-                            public override fun initChannel(ch: SocketChannel) {
-
-                                if (isSendheartBeat) {
-                                    ch.pipeline().addLast("ping", IdleStateHandler(0, heartBeatInterval, 0, TimeUnit.SECONDS)) //5s未发送数据，回调userEventTriggered
-                                }
-
-                                ch.pipeline().addLast(StringEncoder(CharsetUtil.UTF_8))
-                                ch.pipeline().addLast(StringDecoder(CharsetUtil.UTF_8))
-                                ch.pipeline().addLast(LineBasedFrameDecoder(1024))//黏包处理,需要客户端、服务端配合
-                                ch.pipeline().addLast(NettyClientHandler(listener, index, isSendheartBeat, heartBeatData))
+                    .option(ChannelOption.TCP_NODELAY, true)//屏蔽Nagle算法试图
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                    .channel(NioSocketChannel::class.java as Class<out Channel>?)
+                    .handler(object : ChannelInitializer<SocketChannel>() {
+                        @Throws(Exception::class)
+                        public override fun initChannel(ch: SocketChannel) {
+                            if (isSendheartBeat) {
+                                ch.pipeline().addLast(
+                                    "ping",
+                                    IdleStateHandler(0, heartBeatInterval, 0, TimeUnit.SECONDS)
+                                ) //5s未发送数据，回调userEventTriggered
                             }
-                        })
+                            ch.pipeline().addLast(StringEncoder(CharsetUtil.UTF_8))
+                            ch.pipeline().addLast(StringDecoder(CharsetUtil.UTF_8))
+                            ch.pipeline().addLast(LineBasedFrameDecoder(1024*5))//黏包处理,需要客户端、服务端配合
+                            ch.pipeline().addLast(
+                                NettyClientHandler(
+                                    listener,
+                                    index,
+                                    isSendheartBeat,
+                                    heartBeatData
+                                )
+                            )
+                        }
+                    })
 
                 try {
                     channelFuture = bootstrap.connect(host, tcp_port).addListener {
@@ -119,7 +123,6 @@ class NettyTcpClient private constructor(val host: String, val tcp_port: Int, va
                         }
                         isConnecting = false
                     }.sync()
-
                     // Wait until the connection is closed.
                     channelFuture.channel().closeFuture().sync()
                     Log.d(TAG, " 断开连接")
@@ -169,7 +172,8 @@ class NettyTcpClient private constructor(val host: String, val tcp_port: Int, va
     fun sendMsgToServer(data: String, listener: MessageStateListener) = channel?.run {
         val flag = this != null && connectStatus
         if (flag) {
-            this.writeAndFlush(data + System.getProperty("line.separator")).addListener { channelFuture -> listener.isSendSuccss(channelFuture.isSuccess) }
+            this.writeAndFlush(data + System.getProperty("line.separator"))
+                .addListener { channelFuture -> listener.isSendSuccss(channelFuture.isSuccess) }
         }
 
         flag
@@ -187,13 +191,14 @@ class NettyTcpClient private constructor(val host: String, val tcp_port: Int, va
 
         if (flag) {
 
-            val channelFuture = this.writeAndFlush(data + System.getProperty("line.separator")).awaitUninterruptibly()
+            val channelFuture = this.writeAndFlush(data + System.getProperty("line.separator"))
+                .awaitUninterruptibly()
             return channelFuture.isSuccess
         }
 
         false
 
-    }?:false
+    } ?: false
 
     fun setListener(listener: NettyClientListener<String>) {
         this.listener = listener
@@ -213,14 +218,17 @@ class NettyTcpClient private constructor(val host: String, val tcp_port: Int, va
          * 重连间隔
          */
         private var reconnectIntervalTime: Long = 5000
+
         /**
          * 服务器地址
          */
         private var host: String? = null
+
         /**
          * 服务器端口
          */
         private var tcp_port: Int = 0
+
         /**
          * 客户端标识，(因为可能存在多个连接)
          */
@@ -230,6 +238,7 @@ class NettyTcpClient private constructor(val host: String, val tcp_port: Int, va
          * 是否发送心跳
          */
         private var isSendheartBeat: Boolean = false
+
         /**
          * 心跳时间间隔
          */

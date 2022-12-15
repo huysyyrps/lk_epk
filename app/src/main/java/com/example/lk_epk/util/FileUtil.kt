@@ -1,12 +1,14 @@
 package com.example.lk_epk.util
 
+import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import com.example.lk_epk.entity.Calibration
+import com.google.gson.Gson
+import org.json.JSONArray
+import java.io.*
 
 object FileUtil {
     //创建文件夹
@@ -103,5 +105,41 @@ object FileUtil {
             e.printStackTrace()
             return null
         }
+    }
+
+    //读取assets文件
+    fun getLocalData(context: Context, fileName: String): String? {
+        val stringBuilder = StringBuilder()
+        try {
+            val assetManager = context.assets
+            val bf = BufferedReader(
+                InputStreamReader(
+                    assetManager.open(fileName)
+                )
+            )
+            var line: String?
+            while (bf.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return stringBuilder.toString()
+    }
+
+    //Gsob解析
+    fun getGsonData(context: Context, localData: String?): MutableList<Calibration> {
+        val dataList = mutableListOf<Calibration>()
+        try {
+            val data = JSONArray(localData)
+            val gson = Gson()
+            for (i in 0 until data.length()) {
+                val entity = gson.fromJson(data.optJSONObject(i).toString(), Calibration::class.java)
+                dataList.add(entity)
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return dataList
     }
 }

@@ -14,4 +14,78 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
+    <View style="@style/Vine" />
+
+    <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:background="@color/viewfinder_mask"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/tvHeaderWorkPipe"
+                    style="BaseButton"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="试块 \n 3240m/s" />
+
+            <TextView
+                    android:id="@+id/tvHeaderTemp"
+                    style="BaseButton"
+                    android:layout_width="76dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="温度 \n 20℃" />
+
+            <TextView
+                    android:id="@+id/tvHeaderLand"
+                    style="BaseButton"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="厚度 \n 10mm" />
+        </LinearLayout>
+
+        <View
+                style="@style/HLine"
+                android:layout_width="302dp"
+                android:layout_margin="0dp"
+                android:background="@color/red" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="310dp"
+                android:layout_height="0dp"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:padding="0dp" />
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/theme_color">
+
+            <Button
+                    android:id="@+id/btnAddCalibration"
+                    style="@style/button_udadd_style"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:text="+"
+                    android:textColor="@color/red"
+                    android:textSize="24sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+            style="@style/Vine"
+            android:layout_marginRight="5dp" />
+
 </LinearLayout>

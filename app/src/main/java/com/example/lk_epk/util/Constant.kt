@@ -9,7 +9,8 @@ object Constant {
     const val WORKTEMP = "workTemp"//工作温度
     const val AUDIOSPEED = "audioSpeed"//声速
     const val INITIALIZE = "initialize"//参数初始化
-    const val ADATA_PATH = "LKData"
+    const val ADATA_PATH = "LKData"//回放数据
+    const val ADATA_CALITRATION = "caliration"//校准数据
 
     const val STATUS_CONNECT_ERROR = -1
     const val STATUS_CONNECT_CLOSED = 0

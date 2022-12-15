@@ -16,7 +16,6 @@ import io.netty.handler.timeout.IdleStateEvent
 class NettyClientHandler(private val listener: NettyClientListener<String>, private val index: Int, private val isSendheartBeat: Boolean, private val heartBeatData: Any?) : SimpleChannelInboundHandler<String>() {
 
     /**
-     *
      * 设定IdleStateHandler心跳检测每x秒进行一次读检测，
      * 如果x秒内ChannelRead()方法未被调用则触发一次userEventTrigger()方法
      * @param ctx ChannelHandlerContext

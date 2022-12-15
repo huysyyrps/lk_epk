@@ -8,9 +8,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.fragment.*
+import com.example.lk_epk.tcp.NettyTcpClient
 import com.example.lk_epk.util.BaseActivity
 import com.example.lk_epk.util.BaseFragment
-import com.example.lk_epk.util.OkSocketManager
 import com.example.lk_epk.util.showToast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -21,7 +21,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private lateinit var fragmentManager: FragmentManager
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTagList = arrayOf("ScanAFragment", "ScanBFragment", "ScanBackAFragment", "AlignFragment", "AlignFragment")
-    private lateinit var mCurrentFragmen: Fragment
+    private lateinit var currentFragmen: Fragment
+    public var connectStatue:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +43,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mFragmentList.add(2, ScanBackAFragment())
         mFragmentList.add(3, ScanBackBFragment())
         mFragmentList.add(4, AlignFragment())
-        mCurrentFragmen = mFragmentList[0];
+        currentFragmen = mFragmentList[0];
         // 初始化首次进入时的Fragment
         fragmentManager = supportFragmentManager;
         val transaction: FragmentTransaction = fragmentManager.beginTransaction()
-        transaction.add(R.id.flFragment, mCurrentFragmen, mFragmentTagList[0])
+        transaction.add(R.id.flFragment, currentFragmen, mFragmentTagList[0])
         transaction.commitAllowingStateLoss()
 
-        selectFragment = mCurrentFragmen as BaseFragment
+        selectFragment = currentFragmen as BaseFragment
         selectFragment.getActivityContext(this)
     }
 
@@ -73,17 +74,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         selectFragment = fragment as BaseFragment
         selectFragment.getActivityContext(this)
 
-        if (mCurrentFragmen !== fragment) {
+        if (currentFragmen !== fragment) {
             val transaction = fragmentManager.beginTransaction()
             if (!fragment.isAdded) {
                 // 没有添加过:
                 // 隐藏当前的，添加新的，显示新的
-                transaction.hide(mCurrentFragmen).add(R.id.flFragment, fragment, tag).show(fragment)
+                transaction.hide(currentFragmen).add(R.id.flFragment, fragment, tag).show(fragment)
             } else {
                 // 隐藏当前的，显示新的
-                transaction.hide(mCurrentFragmen).show(fragment)
+                transaction.hide(currentFragmen).show(fragment)
             }
-            mCurrentFragmen = fragment
+            currentFragmen = fragment
             transaction.commitAllowingStateLoss()
         }
     }
@@ -92,7 +93,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.linConnect ->{
-                if (OkSocketManager.manager.isConnect){
+                if (selectFragment.connectStatue){
                     resources.getString(R.string.connect_succeeded).showToast(MyApplication.context)
                 }else{
                     selectFragment.connectSocket()
