@@ -19,6 +19,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.dialog_item_header.*
 import kotlinx.android.synthetic.main.fragment_scan_a.*
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -70,24 +71,31 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
             13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,
             -7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,
             15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15)
-        for(i in 0..data.size-1){
-            landList.add(Entry(i.toFloat(), data[i].toFloat()))
-        }
-        lineDataSet = LineDataSet(landList, "A扫")
-        //不绘制数据
-        lineDataSet.setDrawValues(false)
-        //不绘制圆形指示器
-        lineDataSet.setDrawCircles(false)
-        //线模式为圆滑曲线（默认折线）
-        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineDataSet.setColor(resources.getColor(R.color.theme_color))
+        //延时操作模仿数据回传
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+//                makeData()
+                landList.clear()
+                for(i in 0..500){
+                    landList.add(Entry(i.toFloat(), ((-10..20).random()).toFloat()))
+                }
 
-        //将数据集添加到数据 ChartData 中
-        val lineData = LineData(lineDataSet)
-        //将数据添加到图表中
-        lineChart.setData(lineData)
-        lineChart.notifyDataSetChanged()
-//        lineChart.setVisibleXRangeMaximum(200f)//设置x轴最多显示数据条数，（要在设置数据源后调用，否则是无效的）
+                lineDataSet = LineDataSet(landList, "A扫")
+                //不绘制数据
+                lineDataSet.setDrawValues(false)
+                //不绘制圆形指示器
+                lineDataSet.setDrawCircles(false)
+                //线模式为圆滑曲线（默认折线）
+                lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+                lineDataSet.setColor(resources.getColor(R.color.theme_color))
+                //将数据集添加到数据 ChartData 中
+                val lineData = LineData(lineDataSet)
+                //将数据添加到图表中
+                lineChart.setData(lineData)
+                lineChart.notifyDataSetChanged()
+                lineChart.invalidate()
+            }
+        }, 0,200)
     }
 
     override fun onClick(v: View?){
@@ -241,18 +249,28 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
         LogUtil.i(TAG,str)
         val data = arrayOf(13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,
             0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,
-            0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15)
+            0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,
+            -7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,
+            0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,
+            15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,
+            -7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,
+            -20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,
+            15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,
+            13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,
+            -7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,
+            15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15)
         landList.clear()
-        for(i in 0..data.size-1){
-            landList.add(Entry((landList.size).toFloat(), data[i].toFloat()))
-            lineDataSet = LineDataSet(landList, "A扫")
-            //将数据集添加到数据 ChartData 中
-            val lineData = LineData(lineDataSet)
-            //将数据添加到图表中
-            lineChart.data = lineData
-            lineChart.notifyDataSetChanged()
-            lineChart.invalidate()
+        for(i in 0 until  data.size){
+//            landList.removeAt(i)
+            landList.add(Entry(i.toFloat(), data[i].toFloat()))
         }
+        lineDataSet = LineDataSet(landList, "A扫")
+        //将数据集添加到数据 ChartData 中
+        val lineData = LineData(lineDataSet)
+        //将数据添加到图表中
+        lineChart.data = lineData
+        lineChart.notifyDataSetChanged()
+        lineChart.invalidate()
 
 
 //        val listOfStrings = Gson().fromJson(str, mutableListOf<Float>().javaClass)
@@ -266,5 +284,4 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
             dialog.dismiss()
         }
     }
-
 }
