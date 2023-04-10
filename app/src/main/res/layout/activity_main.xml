@@ -105,7 +105,6 @@
 
     <FrameLayout
             android:id="@+id/flFragment"
-            android:layout_marginTop="3dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     </FrameLayout>

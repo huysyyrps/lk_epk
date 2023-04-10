@@ -4,24 +4,341 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/theme_back_color"
-        android:orientation="horizontal"
+        android:background="@color/back_color"
         tools:context=".activity.MainActivity">
 
-    <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lineChart"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="60dp"
-            android:layout_gravity="left"/>
+            android:orientation="horizontal">
 
+        <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:layout_weight="2"
+                android:background="@color/theme_back_color"/>
+        <View style="@style/Vine"/>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+            <RelativeLayout
+                   style="@style/headerRelativeLayout">
+                <TextView
+                        android:id="@+id/tvProjectHeader"
+                        style="@style/headerText"
+                        android:text="@string/project_button" />
+                <View
+                        style="@style/HLine"
+                        android:layout_toLeftOf="@+id/tvProjectHeader"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:background="@color/red" />
+                <View
+                        style="@style/HLine"
+                        android:layout_toRightOf="@+id/tvProjectHeader"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:background="@color/red" />
+            </RelativeLayout>
+            <LinearLayout
+                    style="@style/linlayout">
+                <LinearLayout
+                       style="@style/linlayin">
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="自动增益" />
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/linelayout_themecolor_radion"
+                            android:gravity="center">
+                        <Switch
+                                android:id="@+id/swAutoAdd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:switchMinWidth="60dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="闸门" />
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnGate"
+                            style="@style/BaseButton"
+                            android:text="自动"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="平均等级" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnLeave"
+                            style="@style/BaseButton"
+                            android:text="2"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    style="@style/linlayout">
+
+                <LinearLayout
+                       style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="材料类型" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnMaterialType"
+                            style="@style/BaseButton"
+                            android:text="碳钢"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="声速(m/s)" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnAudioSpeed"
+                            style="@style/BaseButton"
+                            android:text="3254.0"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="检波方式" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnWaveType"
+                            style="@style/BaseButton"
+                            android:text="射频波"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    style="@style/linlayout">
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="范围扩展" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnRangeAdd"
+                            style="@style/BaseButton"
+                            android:text="1X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="工作温度" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnWorkTemp"
+                            style="@style/BaseButton"
+                            android:text="25"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="参数初始" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            android:id="@+id/btnInitialize"
+                            style="@style/BaseButton"
+                            android:text="初始化"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                    style="@style/headerRelativeLayout"
+                    android:layout_marginTop="1dp">
+                <TextView
+                        android:id="@+id/tvDeviceParam"
+                        style="@style/headerText"
+                        android:text="@string/device_param" />
+                <View
+                        style="@style/HLine"
+                        android:layout_toLeftOf="@+id/tvDeviceParam"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:background="@color/red" />
+                <View
+                        style="@style/HLine"
+                        android:layout_toRightOf="@+id/tvDeviceParam"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:background="@color/red" />
+            </RelativeLayout>
+            <LinearLayout
+                    style="@style/linlayout">
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    style="@style/linlayout">
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    style="@style/linlayout">
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                    style="@style/headerRelativeLayout"
+                    android:layout_marginTop="1dp">
+                <TextView
+                        android:id="@+id/tvDirectionControl"
+                        style="@style/headerText"
+                        android:text="@string/direction_control" />
+                <View
+                        style="@style/HLine"
+                        android:layout_toLeftOf="@+id/tvDirectionControl"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:background="@color/red" />
+                <View
+                        style="@style/HLine"
+                        android:layout_toRightOf="@+id/tvDirectionControl"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:background="@color/red" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
     <FrameLayout
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="80dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content">
+            android:layout_marginRight="350dp">
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -30,12 +347,12 @@
             <TextView
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/linelayout_radion"
                     android:layout_marginRight="5dp"
+                    android:background="@drawable/linelayout_radion"
+                    android:gravity="center"
                     android:text="10.3"
                     android:textSize="20dp"
-                    android:gravity="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             <LinearLayout
                     android:layout_width="0dp"
@@ -47,8 +364,8 @@
                         android:id="@+id/btnStop"
                         style="@style/BaseButton"
                         android:layout_width="50dp"
-                        android:text="停止"
                         android:layout_marginBottom="2dp"
+                        android:text="停止"
                         app:bg_color="@color/theme_color"
                         app:bg_corner="5dp" />
 
@@ -63,125 +380,4 @@
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
-
-    <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right">
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp">
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="自动增益" />
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/linelayout_themecolor_radion">
-
-                <Switch
-                        android:id="@+id/swAutoAdd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:switchMinWidth="60dp" />
-            </LinearLayout>
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="闸门" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnGate"
-                    style="@style/BaseButton"
-                    android:text="自动"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="平均等级" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnLeave"
-                    style="@style/BaseButton"
-                    android:text="2"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="材料类型" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnMaterialType"
-                    style="@style/BaseButton"
-                    android:text="碳钢"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="声速(m/s)" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnAudioSpeed"
-                    style="@style/BaseButton"
-                    android:text="3254.0"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="检波方式" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnWaveType"
-                    style="@style/BaseButton"
-                    android:text="射频波"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="范围扩展" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnRangeAdd"
-                    style="@style/BaseButton"
-                    android:text="1X"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="工作温度" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnWorkTemp"
-                    style="@style/BaseButton"
-                    android:text="25"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-            <TextView
-                    style="@style/tvTitle"
-                    android:text="参数初始" />
-
-            <com.example.lk_epk.view.BaseButton
-                    android:id="@+id/btnInitialize"
-                    style="@style/BaseButton"
-                    android:layout_marginBottom="20dp"
-                    android:text="初始化"
-                    app:bg_color="@color/theme_color"
-                    app:bg_corner="5dp" />
-
-        </LinearLayout>
-    </ScrollView>
 </FrameLayout>

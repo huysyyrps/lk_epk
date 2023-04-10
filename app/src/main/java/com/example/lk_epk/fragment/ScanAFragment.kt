@@ -7,6 +7,7 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.customListAdapter
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
+import com.example.lk_epk.entity.Calibration
 import com.example.lk_epk.entity.ScanABean
 import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
 import com.example.lk_epk.tcp.MessageStateListener
@@ -16,6 +17,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.dialog_item_header.*
 import kotlinx.android.synthetic.main.fragment_scan_a.*
@@ -26,7 +29,7 @@ import java.util.*
 class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<String> {
     private lateinit var dialog : MaterialDialog
     private lateinit var btnTag : String
-    private lateinit var dataList: List<String>
+    private lateinit var dataList: MutableList<String>
     private var landList: ArrayList<Entry> = ArrayList()
     private lateinit var lineDataSet:LineDataSet
 
@@ -77,7 +80,7 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
 //                makeData()
                 landList.clear()
                 for(i in 0..500){
-                    landList.add(Entry(i.toFloat(), ((-10..20).random()).toFloat()))
+                    landList.add(Entry(i.toFloat(), ((-10..10).random()).toFloat()))
                 }
 
                 lineDataSet = LineDataSet(landList, "A扫")
@@ -95,34 +98,34 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
                 lineChart.notifyDataSetChanged()
                 lineChart.invalidate()
             }
-        }, 0,200)
+        }, 0,150)
     }
 
     override fun onClick(v: View?){
         when(v?.id){
             //闸门
             R.id.btnGate -> {
-                dataList = resources.getStringArray(R.array.GATE).toList<String>()
+                dataList = resources.getStringArray(R.array.GATE).toMutableList()
                 btnTag = Constant.GATE
             }
             //平均等级
             R.id.btnLeave -> {
-                dataList = resources.getStringArray(R.array.LEAVE).toList<String>()
+                dataList = resources.getStringArray(R.array.LEAVE).toMutableList()
                 btnTag = Constant.LEAVE
             }
             //材料类型
             R.id.btnMaterialType -> {
-                dataList = resources.getStringArray(R.array.MATERIALTYPE).toList<String>()
+                dataList = FileUtil.selectMaterialType()
                 btnTag = Constant.MATERIALTYPE
             }
             //检波方式
             R.id.btnWaveType -> {
-                dataList = resources.getStringArray(R.array.WAVETYPE).toList<String>()
+                dataList = resources.getStringArray(R.array.WAVETYPE).toMutableList()
                 btnTag = Constant.WAVETYPE
             }
             //扩展范围
             R.id.btnRangeAdd -> {
-                dataList = resources.getStringArray(R.array.RANGEADD).toList<String>()
+                dataList = resources.getStringArray(R.array.RANGEADD).toMutableList()
                 btnTag = Constant.RANGEADD
             }
             //初始化

@@ -20,9 +20,9 @@ import kotlinx.android.synthetic.main.fragment_align.*
 
 class AlignFragment : BaseFragment(), View.OnClickListener {
     private lateinit var dialog : MaterialDialog
-    private lateinit var localList : MutableList<Calibration>
-    private var writeList : MutableList<Calibration> = ArrayList()
-    private var allList : MutableList<Calibration> = ArrayList()
+    private var dataList : MutableList<Calibration> = ArrayList()
+    private var localList : MutableList<Calibration> = ArrayList()
+    private var addList : MutableList<Calibration> = ArrayList()
     private lateinit var recyclerViewAdapter:CalibrationAdapter
     private lateinit var workPipe : String
     private lateinit var temp : String
@@ -34,9 +34,11 @@ class AlignFragment : BaseFragment(), View.OnClickListener {
 
     override fun initView() {
         btnAddCalibration.setOnClickListener(this)
+        //组装数据
+        makeData()
         val linlayoutManager = LinearLayoutManager(activityContext)
         recyclerView.layoutManager = linlayoutManager
-        recyclerViewAdapter = CalibrationAdapter(activityContext,allList,object: AdapterCallBack{
+        recyclerViewAdapter = CalibrationAdapter(activityContext,dataList,object: AdapterCallBack{
             override fun <T> backLongClickData(data: T) {
                 val longClientSelectBean = data as Calibration
                 dialog = MaterialDialog(activityContext).show{
@@ -62,35 +64,27 @@ class AlignFragment : BaseFragment(), View.OnClickListener {
         })
         recyclerView.adapter = recyclerViewAdapter
         recyclerViewAdapter.notifyDataSetChanged()
-        //组装数据
-        makeData()
     }
 
     private fun makeData(){
-        //本地基础数据
+        //编辑增加数据
         val loadData = FileUtil.getLocalData(activityContext,"calibrationlist.json")
         localList = FileUtil.getGsonData(activityContext,loadData)
-        //编辑增加数据
         var jsonCaliration = FileUtil.readFileContent(MyApplication.context.getDir(Constant.ADATA_CALITRATION, 0).absolutePath+"/LKCalitration.json")
         val parser = JsonParser()
-        if (jsonCaliration!=null&& jsonCaliration.isNotEmpty()) {
+        if (jsonCaliration!=null&& jsonCaliration.isNotEmpty()&&jsonCaliration!="[]") {
             val jsonArray = parser.parse(jsonCaliration).asJsonArray
             val gson = Gson()
             val it: Iterator<JsonElement> = jsonArray.iterator()
             while (it.hasNext()) {
                 val bean = it.next()
                 val calibration = gson.fromJson<Any>( bean, Calibration::class.java as Class<Any?>) as Calibration
-                writeList.add(calibration)
+                addList.add(calibration)
             }
-//            for (i in 0 until  writeList.size){
-//                localList.add(writeList[i])
-//            }
-            allList.addAll(localList)
-            allList.addAll(writeList)
-            recyclerViewAdapter.notifyDataSetChanged()
-        }else{
-            allList.addAll(localList)
         }
+        dataList.addAll(localList);
+        dataList.addAll(addList);
+        //recyclerViewAdapter.notifyDataSetChanged()
     }
 
     //初始化数据
@@ -145,18 +139,19 @@ class AlignFragment : BaseFragment(), View.OnClickListener {
             land = dialog.etLand.text.toString()
         }
         val caliration = Calibration(workPipe,temp,land)
-        if (allList.contains(caliration)){
+        if (dataList.contains(caliration)){
             resources.getString(R.string.pipe_have).showToast(MyApplication.context)
             dialog.dismiss()
             return
         }
-        writeList.add(caliration)
-        allList.add(caliration)
+        dataList.add(caliration)
+        addList = ArrayList()
+        addList.add(caliration)
         recyclerViewAdapter.notifyDataSetChanged()
 
         val fileName = "LKCalitration.json"
         val filePath = FileUtil.creatFile(MyApplication.context.getDir(Constant.ADATA_CALITRATION, 0).absolutePath, fileName)?.path
-        val message =  FileUtil.writeData(filePath,Gson().toJson(writeList))
+        val message =  FileUtil.writeData(filePath,Gson().toJson(addList))
         dialog.dismiss()
         message.showToast(MyApplication.context)
     }
@@ -168,16 +163,18 @@ class AlignFragment : BaseFragment(), View.OnClickListener {
             resources.getString(R.string.basisc_no_remove).showToast(activityContext)
             return
         }
-        val index:Int = writeList.indexOf(longClientSelectBean)
-        writeList.removeAt(index)
+        val index:Int = dataList.indexOf(longClientSelectBean)
+        var calibration = dataList[index]
+        if (addList.contains(calibration)){
+            addList.remove(calibration)
+        }
+        dataList.removeAt(index)
         val fileName = "LKCalitration.json"
         val filePath = FileUtil.creatFile(MyApplication.context.getDir(Constant.ADATA_CALITRATION, 0).absolutePath, fileName)?.path
-        val message =  FileUtil.writeData(filePath,Gson().toJson(writeList))
+        val message =  FileUtil.writeData(filePath,Gson().toJson(addList))
         dialog.dismiss()
         if (message==activityContext.resources.getString(R.string.save_success)){
             activityContext.resources.getString(R.string.remove_success).showToast(MyApplication.context)
-            val index1:Int = allList.indexOf(longClientSelectBean)
-            allList.removeAt(index1)
             recyclerViewAdapter.notifyDataSetChanged()
         }
     }

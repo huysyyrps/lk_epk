@@ -7,6 +7,8 @@ import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.entity.Calibration
 import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import org.json.JSONArray
 import java.io.*
 
@@ -141,5 +143,28 @@ object FileUtil {
             e.printStackTrace()
         }
         return dataList
+    }
+
+    fun selectMaterialType():MutableList<String>{
+        //获取材料数据
+        var dataList = mutableListOf<String>()
+        val loadData = getLocalData(MyApplication.context,"calibrationlist.json")
+        getGsonData(MyApplication.context,loadData).forEach {
+            dataList.add("${it.workpiece} ${it.temp}")
+        }
+        var jsonCaliration = readFileContent(MyApplication.context.getDir(Constant.ADATA_CALITRATION, 0).absolutePath+"/LKCalitration.json")
+        val parser = JsonParser()
+        if (jsonCaliration!=null&& jsonCaliration?.isNotEmpty()&&jsonCaliration!="[]") {
+            val jsonArray = parser.parse(jsonCaliration).asJsonArray
+            val gson = Gson()
+            val it: Iterator<JsonElement> = jsonArray.iterator()
+            while (it.hasNext()) {
+                val bean = it.next()
+                val calibration =
+                    gson.fromJson<Any>(bean, Calibration::class.java as Class<Any?>) as Calibration
+                dataList.add("${calibration.workpiece} ${calibration.temp}")
+            }
+        }
+        return dataList;
     }
 }

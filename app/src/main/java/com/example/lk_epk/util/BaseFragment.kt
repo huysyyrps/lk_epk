@@ -16,7 +16,7 @@ abstract class BaseFragment : Fragment(), NettyClientListener<String>, SocketBac
 //    lateinit var manager: IConnectionManager
     lateinit var activityContext: Context
     private var ip: String = "172.16.20.5"
-    private var port: Int = 5005
+    private var port: Int = 5000
     lateinit var nettyTcpClient: NettyTcpClient
     var connectStatue: Boolean = false
 

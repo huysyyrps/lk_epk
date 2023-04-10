@@ -290,6 +290,7 @@
 
     <color name="theme_back_color">#262626</color>
     <color name="theme_color">#F5B12A</color>
-    <color name="back_color">#181818</color>
     <color name="dialog_color">#44444444</color>
+    <color name="back_color">#FF424242</color>
+<!--    0xFF424242-->
 </resources>
