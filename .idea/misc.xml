@@ -15,13 +15,17 @@
         <entry key="..\:/LK_EPK/app/src/main/res/drawable/radion_image.xml" value="0.164" />
         <entry key="..\:/LK_EPK/app/src/main/res/drawable/radionbutton_select.xml" value="0.164" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
+        <entry key="..\:/LK_EPK/app/src/main/res/layout/activity_welcome.xml" value="0.19583333333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/adapter_calibration.xml" value="0.24166666666666667" />
+        <entry key="..\:/LK_EPK/app/src/main/res/layout/adapter_item.xml" value="0.19583333333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_addcalibration.xml" value="0.28541666666666665" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_edittext.xml" value="0.3515625" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_item.xml" value="0.29791666666666666" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_item_header.xml" value="0.25364583333333335" />
+        <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_numedittext.xml" value="0.2942708333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_removecalibration.xml" value="0.3171875" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_select.xml" value="0.3359375" />
+        <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_stringedittext.xml" value="0.2942708333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_align.xml" value="0.2989583333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_fun.xml" value="0.25" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan_a.xml" value="0.23645833333333333" />

@@ -20,4 +20,6 @@ object Constant {
     const val TAG_TWO = 2
     const val TAG_THREE = 3
     const val TAG_TEN = 10
+
+    const val BASE_URL = "http://192.168.43.251:8080"
 }

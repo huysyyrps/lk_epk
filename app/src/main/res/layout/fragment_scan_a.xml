@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/back_color"
@@ -12,47 +13,167 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-        <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
+        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
                 android:layout_weight="2"
-                android:background="@color/theme_back_color"/>
-        <View style="@style/Vine"/>
+                android:orientation="vertical">
+
+            <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/theme_back_color" />
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.2">
+
+                <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:background="@color/theme_back_color" />
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <LinearLayout
+                                android:id="@+id/linSeekBar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="3dp"
+                                    android:gravity="center"
+                                    android:text="1" />
+
+                            <SeekBar
+                                    android:id="@+id/seekbar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/cardview_dark_background"
+                                    android:progress="80" />
+
+                            <TextView
+                                    android:id="@+id/tvSeekBar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="3dp"
+                                    android:layout_marginRight="3dp"
+                                    android:gravity="center"
+                                    android:text="80" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:orientation="horizontal">
+
+                            <TextView
+                                    android:layout_width="65dp"
+                                    android:layout_height="40dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="55dp"
+                                    android:background="@drawable/linelayout_radion"
+                                    android:gravity="center"
+                                    android:text="10.3"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+                            <LinearLayout
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="vertical">
+
+                                <com.example.lk_epk.view.BaseButton
+                                        android:id="@+id/btnStop"
+                                        style="@style/BaseButton"
+                                        android:layout_width="50dp"
+                                        android:layout_height="20dp"
+                                        android:layout_marginBottom="1dp"
+                                        android:text="停止"
+                                        app:bg_color="@color/theme_color"
+                                        app:bg_corner="5dp" />
+
+                                <com.example.lk_epk.view.BaseButton
+                                        android:id="@+id/btnSave"
+                                        style="@style/BaseButton"
+                                        android:layout_width="50dp"
+                                        android:layout_height="20dp"
+                                        android:layout_marginTop="1dp"
+                                        android:text="存储"
+                                        app:bg_color="@color/theme_color"
+                                        app:bg_corner="5dp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <View style="@style/Vine" />
 
         <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
-            <RelativeLayout
-                   style="@style/headerRelativeLayout">
+
+            <RelativeLayout style="@style/headerRelativeLayout">
+
                 <TextView
                         android:id="@+id/tvProjectHeader"
                         style="@style/headerText"
                         android:text="@string/project_button" />
+
                 <View
                         style="@style/HLine"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
                         android:layout_toLeftOf="@+id/tvProjectHeader"
-                        android:layout_width="4dp"
-                        android:layout_height="13dp"
                         android:background="@color/red" />
+
                 <View
                         style="@style/HLine"
-                        android:layout_toRightOf="@+id/tvProjectHeader"
                         android:layout_width="4dp"
                         android:layout_height="13dp"
+                        android:layout_toRightOf="@+id/tvProjectHeader"
                         android:background="@color/red" />
             </RelativeLayout>
-            <LinearLayout
-                    style="@style/linlayout">
-                <LinearLayout
-                       style="@style/linlayin">
+
+            <LinearLayout style="@style/linlayout">
+
+                <LinearLayout style="@style/linlayin">
+
                     <TextView
                             style="@style/tvTitle"
                             android:text="自动增益" />
+
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
@@ -62,6 +183,7 @@
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/linelayout_themecolor_radion"
                             android:gravity="center">
+
                         <Switch
                                 android:id="@+id/swAutoAdd"
                                 android:layout_width="wrap_content"
@@ -71,12 +193,12 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
                             android:text="闸门" />
+
                     <com.example.lk_epk.view.BaseButton
                             android:id="@+id/btnGate"
                             style="@style/BaseButton"
@@ -85,8 +207,7 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -100,11 +221,10 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                    style="@style/linlayout">
 
-                <LinearLayout
-                       style="@style/linlayin">
+            <LinearLayout style="@style/linlayout">
+
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -118,8 +238,7 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -133,8 +252,7 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -148,11 +266,10 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                    style="@style/linlayout">
 
-                <LinearLayout
-                        style="@style/linlayin">
+            <LinearLayout style="@style/linlayout">
+
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -166,8 +283,7 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -181,8 +297,7 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -200,27 +315,30 @@
             <RelativeLayout
                     style="@style/headerRelativeLayout"
                     android:layout_marginTop="1dp">
+
                 <TextView
                         android:id="@+id/tvDeviceParam"
                         style="@style/headerText"
                         android:text="@string/device_param" />
+
                 <View
                         style="@style/HLine"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
                         android:layout_toLeftOf="@+id/tvDeviceParam"
-                        android:layout_width="4dp"
-                        android:layout_height="13dp"
                         android:background="@color/red" />
+
                 <View
                         style="@style/HLine"
-                        android:layout_toRightOf="@+id/tvDeviceParam"
                         android:layout_width="4dp"
                         android:layout_height="13dp"
+                        android:layout_toRightOf="@+id/tvDeviceParam"
                         android:background="@color/red" />
             </RelativeLayout>
-            <LinearLayout
-                    style="@style/linlayout">
-                <LinearLayout
-                        style="@style/linlayin">
+
+            <LinearLayout style="@style/linlayout">
+
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -233,38 +351,7 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
-
-                    <TextView
-                            style="@style/tvTitle"
-                            android:text="电池电压" />
-
-                    <com.example.lk_epk.view.BaseButton
-                            style="@style/BaseButton"
-                            android:text="10.5X"
-                            app:bg_color="@color/theme_color"
-                            app:bg_corner="5dp" />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                    style="@style/linlayout">
-                <LinearLayout
-                        style="@style/linlayin">
-
-                    <TextView
-                            style="@style/tvTitle"
-                            android:text="电池电压" />
-
-                    <com.example.lk_epk.view.BaseButton
-                            style="@style/BaseButton"
-                            android:text="10.5X"
-                            app:bg_color="@color/theme_color"
-                            app:bg_corner="5dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -277,10 +364,10 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                    style="@style/linlayout">
-                <LinearLayout
-                        style="@style/linlayin">
+
+            <LinearLayout style="@style/linlayout">
+
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -293,8 +380,36 @@
                             app:bg_corner="5dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                        style="@style/linlayin">
+                <LinearLayout style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/linlayout">
+
+                <LinearLayout style="@style/linlayin">
+
+                    <TextView
+                            style="@style/tvTitle"
+                            android:text="电池电压" />
+
+                    <com.example.lk_epk.view.BaseButton
+                            style="@style/BaseButton"
+                            android:text="10.5X"
+                            app:bg_color="@color/theme_color"
+                            app:bg_corner="5dp" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/linlayin">
 
                     <TextView
                             style="@style/tvTitle"
@@ -311,73 +426,43 @@
             <RelativeLayout
                     style="@style/headerRelativeLayout"
                     android:layout_marginTop="1dp">
+
                 <TextView
                         android:id="@+id/tvDirectionControl"
                         style="@style/headerText"
                         android:text="@string/direction_control" />
+
                 <View
                         style="@style/HLine"
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
                         android:layout_toLeftOf="@+id/tvDirectionControl"
-                        android:layout_width="4dp"
-                        android:layout_height="13dp"
                         android:background="@color/red" />
+
                 <View
                         style="@style/HLine"
-                        android:layout_toRightOf="@+id/tvDirectionControl"
                         android:layout_width="4dp"
                         android:layout_height="13dp"
+                        android:layout_toRightOf="@+id/tvDirectionControl"
                         android:background="@color/red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/theme_back_color">
+
+                <com.fphoenixcorneae.widget.rocker.RockerView
+                        android:id="@+id/rockerView"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                       android:layout_centerInParent="true"
+                        android:layout_marginTop="20dp" />
             </RelativeLayout>
 
 
         </LinearLayout>
     </LinearLayout>
-    <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="350dp">
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/linelayout_radion"
-                    android:gravity="center"
-                    android:text="10.3"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnStop"
-                        style="@style/BaseButton"
-                        android:layout_width="50dp"
-                        android:layout_marginBottom="2dp"
-                        android:text="停止"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp" />
-
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnSave"
-                        style="@style/BaseButton"
-                        android:layout_width="50dp"
-                        android:layout_marginTop="2dp"
-                        android:text="存储"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp" />
-            </LinearLayout>
-        </LinearLayout>
-    </FrameLayout>
 </FrameLayout>

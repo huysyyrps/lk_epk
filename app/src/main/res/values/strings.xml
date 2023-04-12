@@ -8,6 +8,7 @@
     <string name="device_power">仪器电量</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="work_temp">请输入温度(-200~800)</string>
+    <string name="file_name">请输入文件名称</string>
 
     <string name="btn_sure">确定</string>
     <string name="btn_cancel">取消</string>
@@ -33,4 +34,5 @@
     <string name="project_button">功能按键</string>
     <string name="device_param">设备参数</string>
     <string name="direction_control">方向控制</string>
+    <string name="in_project">进入程序</string>
 </resources>

@@ -40,7 +40,7 @@ class ScanBFragment : BaseFragment(), View.OnClickListener {
                 //将数据集添加到数据 ChartData 中
                 val lineData = LineData(lineDataSet)
                 //将数据添加到图表中
-                lineChart.setData(lineData)
+                lineChart.data = lineData
                 lineChart.notifyDataSetChanged()
                 lineChart.invalidate()
                 i++

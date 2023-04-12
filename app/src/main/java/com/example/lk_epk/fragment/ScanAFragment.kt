@@ -1,14 +1,16 @@
 package com.example.lk_epk.fragment
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.util.Log
 import android.view.View
+import android.webkit.WebViewClient
+import android.widget.SeekBar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.customListAdapter
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
-import com.example.lk_epk.entity.Calibration
-import com.example.lk_epk.entity.ScanABean
 import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
 import com.example.lk_epk.tcp.MessageStateListener
 import com.example.lk_epk.tcp.NettyClientListener
@@ -16,13 +18,10 @@ import com.example.lk_epk.util.*
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.gson.Gson
-import com.google.gson.JsonElement
-import com.google.gson.JsonParser
-import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.dialog_item_header.*
+import kotlinx.android.synthetic.main.dialog_numedittext.*
+import kotlinx.android.synthetic.main.dialog_stringedittext.*
 import kotlinx.android.synthetic.main.fragment_scan_a.*
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -58,29 +57,63 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
         //存储
         btnSave.setOnClickListener(this)
         LineChartSetting.SettingLineChart(lineChart)
+
+        swAutoAdd.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                linSeekBar.visibility = View.VISIBLE
+            } else{
+                linSeekBar.visibility = View.GONE
+            }
+        }
+        //增益设置
+        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                tvSeekBar.text = "" + (seekbar.progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                Log.e("XXX", "${seekBar?.progress}");
+            }
+
+        })
+
+
+        webView.settings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
+        webView.setBackgroundColor(resources.getColor(R.color.theme_back_color))
+        var webSettings = webView!!.settings
+        // 设置自适应屏幕, 两者合用
+        webSettings.useWideViewPort = true  // 将图片调整到适合webview的大小
+        webSettings.loadWithOverviewMode = true  // 缩放至屏幕的大小
+        webView.loadUrl(Constant.BASE_URL)
+        rockerView// 设置默认状态下的摇杆颜色
+            .setDefaultColor(Color.WHITE)
+            // 设置按下状态下的摇杆颜色
+            .setTouchedColor(Color.WHITE)
+            // 设置背景着色
+            .setBackgroundTint(resources.getColor(R.color.theme_color))
+            // 设置摇杆改变监听
+            .setOnSteeringWheelChangedListener { linearSpeed, angleSpeed ->
+                Log.e("RockerView", "linearSpeed: $linearSpeed, angleSpeed: $angleSpeed")
+            }
     }
 
     //初始化数据
     override fun initData() {
-        val data = arrayOf(13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,
-            0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,
-            0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,
-            -7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,
-            0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,
-            15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,
-            -7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,
-            -20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,
-            15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,
-            13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,
-            -7,15,-7,0,0,0,0,2,-5,15,-7,15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,
-            15,13,-20,15,-7,0,0,0,0,2,27,15,-7,15,-7,0,0,0,0,2,-5,15,-7,15)
         //延时操作模仿数据回传
         Timer().schedule(object : TimerTask() {
             override fun run() {
 //                makeData()
                 landList.clear()
-                for(i in 0..500){
-                    landList.add(Entry(i.toFloat(), ((-10..10).random()).toFloat()))
+                landList.add(Entry(0.toFloat(), 100.toFloat()))
+                landList.add(Entry(1.toFloat(), 2.toFloat()))
+                landList.add(Entry(2.toFloat(), 90.toFloat()))
+                landList.add(Entry(3.toFloat(), 2.toFloat()))
+                for(i in 4..300){
+                    landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
                 }
 
                 lineDataSet = LineDataSet(landList, "A扫")
@@ -135,18 +168,7 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
             }
             //工作温度
             R.id.btnWorkTemp -> {
-                dialog = MaterialDialog(activityContext).show{
-                    customView(	//自定义弹窗
-                        viewRes = R.layout.dialog_edittext,//自定义文件
-                        dialogWrapContent = true,	//让自定义宽度生效
-                        scrollable = true,			//让自定义宽高生效
-                        noVerticalPadding = true    //让自定义高度生效
-                    )
-                    cornerRadius(16f)  //圆角
-                }
-                dialog.btnCancel.setOnClickListener{
-                    dialog.dismiss()
-                }
+                dialog = setEdittextdialog("WorkTemp")
                 dialog.btnSure.setOnClickListener {
                     val temp = dialog.editText.text.toString()
                     if (temp.trim { it <= ' ' } == ""){
@@ -165,14 +187,18 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
             }
             //存储
             R.id.btnSave ->{
-                val fileName = "LK" + Timestamp.transToString(Date().time) + ".json"
-                val scanBeanA = ScanABean(btnGate.text.toString(),btnLeave.text.toString(),btnMaterialType.text.toString(),btnAudioSpeed.text.toString(),
-                    btnWaveType.text.toString(),btnRangeAdd.text.toString(),btnWorkTemp.text.toString(), landList)
-                val myGson = Gson()
-                val jsonStr = myGson.toJson(scanBeanA)
-                val filePath = FileUtil.creatFile(MyApplication.context.getDir(Constant.ADATA_PATH, 0).absolutePath, fileName)?.path
-                val writeState = FileUtil.writeData(filePath, jsonStr);
-                writeState.showToast(MyApplication.context)
+                dialog = setEdittextdialog("Save")
+                dialog.btnSureString.setOnClickListener {
+                    val view1: View = frameLayout
+                    view1.isDrawingCacheEnabled = true
+                    view1.buildDrawingCache()
+                    val bitmap = Bitmap.createBitmap(view1.drawingCache)
+                    val fileName = dialog.editTextString.text.toString()
+                    if (fileName.trim { it <= ' ' } == "")
+                    FileUtil.writeBitmap("LKEPK",DateTimeUtil.getNowDateTime(),bitmap)
+                    else
+                        FileUtil.writeBitmap("LKEPK",fileName,bitmap)
+                }
                 return
             }
             else -> {"111"}
@@ -229,6 +255,32 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
         }
     }
 
+    /**
+     * 设置设置edittextdialog
+     */
+
+    private fun setEdittextdialog(tag:String):MaterialDialog{
+        dialog = MaterialDialog(activityContext).show{
+            customView(	//自定义弹窗
+                viewRes = if (tag=="WorkTemp") R.layout.dialog_numedittext else R.layout.dialog_stringedittext,//自定义文件
+                dialogWrapContent = true,	//让自定义宽度生效
+                scrollable = true,			//让自定义宽高生效
+                noVerticalPadding = true    //让自定义高度生效
+            )
+            cornerRadius(16f)  //圆角
+        }
+        if (tag=="WorkTemp"){
+            dialog.btnCancel.setOnClickListener{
+                dialog.dismiss()
+            }
+        }else{
+            dialog.btnCancelString.setOnClickListener{
+                dialog.dismiss()
+            }
+        }
+        return dialog
+    }
+
     //发送数据
     private fun sendData(s: String, data: String) {
         data.showToast(MyApplication.context)
@@ -267,7 +319,7 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
 //            landList.removeAt(i)
             landList.add(Entry(i.toFloat(), data[i].toFloat()))
         }
-        lineDataSet = LineDataSet(landList, "A扫")
+        lineDataSet = LineDataSet(landList, "")
         //将数据集添加到数据 ChartData 中
         val lineData = LineData(lineDataSet)
         //将数据添加到图表中

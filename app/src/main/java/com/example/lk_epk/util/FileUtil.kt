@@ -1,9 +1,13 @@
 package com.example.lk_epk.util
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import com.example.lk_epk.MyApplication
+import com.example.lk_epk.MyApplication.Companion.context
 import com.example.lk_epk.R
 import com.example.lk_epk.entity.Calibration
 import com.google.gson.Gson
@@ -48,6 +52,45 @@ object FileUtil {
             return e.toString()
         }
         return ""
+    }
+
+    //写入图片
+    open fun writeBitmap(path: String?,name:String?, bitmap: Bitmap) : Boolean{
+        try {
+            if (Environment.getExternalStorageState() == "mounted") {
+                val dir = Environment.getExternalStorageDirectory().toString() + "/" + path + "/" //图片保存的文件夹名
+                val file = File(dir)
+                //如果不存在  就mkdirs()创建此文件夹
+                if (!file.exists()) {
+                    file.mkdirs()
+                }
+                //将要保存的图片文件
+                val mFile = File(dir + name)
+                val outputStream = FileOutputStream(mFile) //构建输出流
+                bitmap.compress(
+                    Bitmap.CompressFormat.PNG,
+                    100,
+                    outputStream
+                ) //compress到输出outputStream
+                val uri = Uri.fromFile(mFile) //获得图片的uri
+                context.sendBroadcast(
+                    Intent(
+                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                        uri
+                    )
+                ) //发送广播通知更新图库，这样系统图库可以找到这张图片
+
+                outputStream.flush()
+                outputStream.close()
+                return true
+            }
+        } catch (e:FileNotFoundException) {
+            e.printStackTrace()
+            return false
+        } catch (e:IOException) {
+            e.printStackTrace()
+        }
+        return false
     }
 
     //判断文件是否存在

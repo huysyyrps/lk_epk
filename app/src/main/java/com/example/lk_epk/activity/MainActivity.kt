@@ -1,6 +1,11 @@
 package com.example.lk_epk.activity
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -8,12 +13,12 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.fragment.*
-import com.example.lk_epk.tcp.NettyTcpClient
 import com.example.lk_epk.util.BaseActivity
 import com.example.lk_epk.util.BaseFragment
 import com.example.lk_epk.util.showToast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.permissionx.guolindev.PermissionX
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), View.OnClickListener {
@@ -22,11 +27,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTagList = arrayOf("ScanAFragment", "ScanBFragment", "ScanBackAFragment", "AlignFragment", "AlignFragment")
     private lateinit var currentFragmen: Fragment
-    public var connectStatue:Boolean = false
 
+    companion object {
+        fun actionStart(context: Context) {
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        requestPermission()
         bv_battery.BatteryView()
         bv_battery.setProgress(50)
         linConnect.setOnClickListener(this)
@@ -52,6 +63,31 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         selectFragment = currentFragmen as BaseFragment
         selectFragment.getActivityContext(this)
+    }
+    /*
+    权限申请
+     */
+    private fun requestPermission() {
+        val requestList = ArrayList<String>()
+        requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        requestList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (requestList.isNotEmpty()) {
+            PermissionX.init(this)
+                .permissions(requestList)
+                .onExplainRequestReason { scope, deniedList ->
+                    val message = "需要您同意以下权限才能正常使用"
+                    scope.showRequestReasonDialog(deniedList, message, "同意", "取消")
+                }
+                .request { allGranted, _, deniedList ->
+                    if (allGranted) {
+                        Log.e("TAG","所有申请的权限都已通过")
+                    } else {
+                        Log.e("TAG","您拒绝了如下权限：$deniedList")
+                        finish()
+                    }
+                }
+        }
+
     }
 
     private fun tabChange(tab: TabLayout.Tab) {
