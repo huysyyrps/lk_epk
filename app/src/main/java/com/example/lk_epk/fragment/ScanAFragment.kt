@@ -1,7 +1,8 @@
 package com.example.lk_epk.fragment
 
-import android.graphics.Bitmap
+import android.content.Intent
 import android.graphics.Color
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.webkit.WebViewClient
@@ -18,6 +19,7 @@ import com.example.lk_epk.util.*
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.osard.screen.utils.ScreenCaptureUtils
 import kotlinx.android.synthetic.main.dialog_item_header.*
 import kotlinx.android.synthetic.main.dialog_numedittext.*
 import kotlinx.android.synthetic.main.dialog_stringedittext.*
@@ -31,6 +33,7 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
     private lateinit var dataList: MutableList<String>
     private var landList: ArrayList<Entry> = ArrayList()
     private lateinit var lineDataSet:LineDataSet
+    private lateinit var fileName:String
 
     companion object{
         private const val TAG = "ScanAFragment"
@@ -79,7 +82,6 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
             }
 
         })
-
 
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = WebViewClient()
@@ -189,15 +191,28 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
             R.id.btnSave ->{
                 dialog = setEdittextdialog("Save")
                 dialog.btnSureString.setOnClickListener {
-                    val view1: View = frameLayout
-                    view1.isDrawingCacheEnabled = true
-                    view1.buildDrawingCache()
-                    val bitmap = Bitmap.createBitmap(view1.drawingCache)
-                    val fileName = dialog.editTextString.text.toString()
-                    if (fileName.trim { it <= ' ' } == "")
-                    FileUtil.writeBitmap("LKEPK",DateTimeUtil.getNowDateTime(),bitmap)
-                    else
-                        FileUtil.writeBitmap("LKEPK",fileName,bitmap)
+                    val name = dialog.editTextString.text.toString()
+                    fileName = if (name.trim { it <= ' ' } == ""){
+                        DateTimeUtil.getNowDateTime()
+                    }else{
+                        name
+                    }
+                    val dir = Environment.getExternalStorageDirectory().absolutePath+Constant.SCANABACK
+                    var saveTag = ScreenCaptureUtils.createInstance()
+                        .setImageName("${fileName}.png")
+                        .setImagePath(dir)
+                        .setView(frameLayout)
+                        .saveBitmapToJpg(100);
+                    if (saveTag==null){
+                        dialog.dismiss()
+                    }else{
+                        activity?.let { it1 ->
+                            resources.getString(R.string.save_success).showToast(
+                                it1
+                            )
+                        }
+                        dialog.dismiss()
+                    }
                 }
                 return
             }
@@ -331,6 +346,13 @@ class ScanAFragment : BaseFragment(), View.OnClickListener, NettyClientListener<
 //        val listOfStrings = Gson().fromJson(str, mutableListOf<Float>().javaClass)
 //        var list: ArrayList<Float> = Gson().fromJson(str.toString(), object : TypeToken<ArrayList<Float>>() {}.type)
 //        "${list.size}这是".showToast(MyApplication.context)
+    }
+
+    /**
+     * 录屏申请
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //截屏前的准备
     }
 
     override fun onDestroy() {

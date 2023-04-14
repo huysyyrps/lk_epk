@@ -1,5 +1,7 @@
 package com.example.lk_epk.util
 
+import android.os.Environment
+
 object Constant {
     const val GATE = "gate"//闸门
     const val LEAVE = "leave"//平均等级
@@ -22,4 +24,5 @@ object Constant {
     const val TAG_TEN = 10
 
     const val BASE_URL = "http://192.168.43.251:8080"
+    const val SCANABACK = "/LKAScan"
 }

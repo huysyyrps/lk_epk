@@ -1,48 +1,65 @@
 package com.example.lk_epk.fragment
 
-import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Build
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Environment
+import android.text.TextUtils
 import androidx.annotation.RequiresApi
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.list.customListAdapter
-import com.example.lk_epk.MyApplication
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.lk_epk.R
-import com.example.lk_epk.entity.ScanABean
-import com.example.lk_epk.fragment.adapter.MaterialDialogAdapter
-import com.example.lk_epk.util.*
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.google.gson.Gson
+import com.example.lk_epk.adapter.BackDataAdapter
+import com.example.lk_epk.entity.BackData
+import com.example.lk_epk.util.BaseFragment
+import com.example.lk_epk.util.Constant
+import com.example.lk_epk.util.LogUtil
+import com.example.lk_epk.util.showToast
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.fragment_scan_backa.*
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnAudioSpeed
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnGate
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnLeave
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnMaterialType
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnRangeAdd
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnWaveType
-import kotlinx.android.synthetic.main.fragment_scan_backa.btnWorkTemp
-import kotlinx.android.synthetic.main.fragment_scan_backa.lineChart
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
 import java.io.File
-import kotlin.collections.ArrayList
 
 
-class ScanBackAFragment : BaseFragment(), View.OnClickListener {
-    private val fileList = ArrayList<File>()
-    private var landList : ArrayList<Entry> = ArrayList()
-    private lateinit var dialog : MaterialDialog
+class ScanBackAFragment : BaseFragment() {
+    private var pathList = ArrayList<String>()
+    private var dataList = ArrayList<BackData>()
+    private val adapter by lazy { BackDataAdapter(dataList) }
+    private val file by lazy { File(Environment.getExternalStorageDirectory().absolutePath + Constant.SCANABACK) }
+    private var startNum = 0
+    private var lastNum = 50
+    private var allNum = 0
     override fun getLayout(): Int {
         return R.layout.fragment_scan_backa
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
-        btnBackList.setOnClickListener(this)
-        LineChartSetting.SettingLineChart(lineChart)
+        val gridLayoutManager = GridLayoutManager(activityContext, 5)
+        recyclerView.layoutManager = gridLayoutManager
+
+        smartRefreshLayout.setRefreshHeader(ClassicsHeader(activityContext))
+        smartRefreshLayout.setRefreshFooter(ClassicsFooter(activityContext)) //是否启用下拉刷新功能
+        smartRefreshLayout.setOnRefreshListener {
+            startNum = 0
+            lastNum = 50
+            dataList.clear()
+            getFileList()
+        }
+        smartRefreshLayout.setOnLoadMoreListener {
+            if (allNum == lastNum) {
+                "暂无更多数据".showToast(activityContext)
+                smartRefreshLayout.finishLoadMore() //结束加载
+            } else if (lastNum < allNum) {
+                startNum = lastNum
+                lastNum += 50
+                if (lastNum >= allNum) {
+                    lastNum = allNum
+                }
+                getFileList()
+            }
+        }
+
     }
 
     //初始化数据
@@ -53,73 +70,62 @@ class ScanBackAFragment : BaseFragment(), View.OnClickListener {
 
     //获取数据列表
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getFileList(){
-        val filePath : String = MyApplication.context.getDir(Constant.ADATA_PATH, 0).toPath().toString()
-        if (FileUtil.isFileExists(filePath) && FileUtil.hasFileExists(filePath)) {
-            FileUtil.getFilesAllName(fileList, filePath)
-        }
-        val adapter = MaterialDialogAdapter("backData",fileList, object:DialogCallBack{
-            override fun backData(data: String) {
-                val jsonString = FileUtil.readFileContent(data)
-                val myGson = Gson()
-                val scanBean = myGson.fromJson(jsonString,ScanABean::class.java)
-                setScanBean(scanBean)
-                dialog?.dismiss()
+    private fun getFileList() {
+        /**将文件夹下所有文件名存入数组*/
+        pathList = file.list().toList().reversed() as ArrayList<String>
+        allNum = pathList.size
+        if (pathList.isEmpty()) {
+            "暂无图片".showToast(activityContext)
+        } else {
+            /**遍历数组*/
+            if (allNum > 50) {
+                for (i in startNum until lastNum) {
+                    //val bitmap = BitmapFactory.decodeFile("${file}/${pathList[i]}")
+                    var path = "${file}/${pathList[i]}"
+                    makeData(i,path)
+                }
+            }else{
+                for (i in startNum until pathList.size) {
+                    var path = "${file}/${pathList[i]}"
+                    makeData(i,path)
+                }
+                lastNum = allNum
+                smartRefreshLayout.finishLoadMore() //结束加载
             }
-        })
-        dialog = MaterialDialog(activityContext).show{
-            customView(	//自定义弹窗
-                viewRes = R.layout.dialog_item_header,//自定义文件
-                dialogWrapContent = true,	//让自定义宽度生效
-                scrollable = true,			//让自定义宽高生效
-                noVerticalPadding = true    //让自定义高度生效
-            )
-            cornerRadius(16f)  //圆角
-            customListAdapter(adapter)
         }
     }
 
-    //显示数据
-    private fun setScanBean(scanBean: ScanABean) {
-        btnGate.text = scanBean.gate
-        btnLeave.text = scanBean.leave
-        btnMaterialType.text = scanBean.materialType
-        btnAudioSpeed.text = scanBean.audioSpeed
-        btnWaveType.text = scanBean.waveType
-        btnRangeAdd.text = scanBean.rangeAdd
-        btnWorkTemp.text = scanBean.workTemp
+    private fun makeData(i:Int, path:String){
+        Luban.with(activityContext)
+            .load(path)
+            .ignoreBy(100)
+            .filter { path ->
+                !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"))
+            }
+            .setCompressListener(object : OnCompressListener {
+                override fun onStart() {
+                    // TODO 压缩开始前调用，可以在方法内启动 loading UI
+                }
 
-        landList = scanBean.landList
-        var lineDataSet = LineDataSet(landList, "A扫")
-        //不绘制数据
-        lineDataSet.setDrawValues(false)
-        //不绘制圆形指示器
-        lineDataSet.setDrawCircles(false)
-        //线模式为圆滑曲线（默认折线）
-        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineDataSet.setColor(resources.getColor(R.color.theme_color))
+                override fun onSuccess(file: File) {
+                    val bitmap = BitmapFactory.decodeFile(file.path)
+                    var backData = BackData(pathList[i], bitmap)
+                    dataList.add(backData)
+                    recyclerView.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                }
 
-        //将数据集添加到数据 ChartData 中
-        val lineData = LineData(lineDataSet)
-        //将数据添加到图表中
-        lineChart.setData(lineData)
-        lineChart.invalidate()
+                override fun onError(e: Throwable) {
+
+                }
+            }).launch()
+        smartRefreshLayout?.finishLoadMore()
+        smartRefreshLayout?.finishRefresh()
     }
+
 
     //服务器返回数据
     override fun messageResponse(str: String) {
         TODO("Not yet implemented")
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onClick(v: View?) {
-        when(v?.id){
-            //闸门
-            R.id.btnBackList -> {
-                getFileList()
-            }
-            else -> {"111"}
-        }
-    }
-
 }

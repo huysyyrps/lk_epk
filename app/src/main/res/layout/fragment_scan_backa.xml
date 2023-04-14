@@ -8,103 +8,22 @@
         android:orientation="horizontal"
         tools:context=".activity.MainActivity">
 
-        <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="0dp"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/smartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
-        <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:background="@color/white" />
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="闸门" />
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnGate"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false"/>
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="平均等级" />
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnLeave"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false"/>
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="材料类型" />
-
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnMaterialType"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false"/>
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="声速(m/s)" />
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnAudioSpeed"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false" />
-
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="检波方式" />
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnWaveType"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false" />
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="范围扩展" />
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnRangeAdd"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false" />
-
-                <TextView
-                        style="@style/tvTitle"
-                        android:text="工作温度" />
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnWorkTemp"
-                        style="@style/BaseButton"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        app:bg_client="false"/>
-
-                <com.example.lk_epk.view.BaseButton
-                        android:id="@+id/btnBackList"
-                        style="@style/BaseButton"
-                        android:layout_marginTop="20dp"
-                        app:bg_color="@color/theme_color"
-                        app:bg_corner="5dp"
-                        android:text="回显列表"/>
-
-            </LinearLayout>
-        </ScrollView>
-
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </LinearLayout>

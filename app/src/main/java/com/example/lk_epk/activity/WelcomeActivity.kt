@@ -1,24 +1,13 @@
 package com.example.lk_epk.activity
 
-import adapter.ImageAdapter
-import android.content.Intent
-import android.net.Uri
+import com.example.lk_epk.adapter.ImageAdapter
 import android.os.Bundle
-import android.util.Log
-import android.view.Window
-import android.view.WindowManager
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.data.BannerData
 import com.example.lk_epk.util.BaseActivity
 import com.youth.banner.indicator.CircleIndicator
-import com.youth.banner.listener.OnBannerListener
 import kotlinx.android.synthetic.main.activity_welcome.*
-import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.IOException
-import java.io.InputStreamReader
-import java.util.*
 
 class WelcomeActivity : BaseActivity() {
     var i:Int = 0

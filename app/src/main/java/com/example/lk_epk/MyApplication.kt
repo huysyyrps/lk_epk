@@ -3,6 +3,7 @@ package com.example.lk_epk
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.osard.screen.utils.ScreenRecordUtils
 
 class MyApplication : Application() {
     companion object {
@@ -12,5 +13,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
+        ScreenRecordUtils.init(this);
     }
 }

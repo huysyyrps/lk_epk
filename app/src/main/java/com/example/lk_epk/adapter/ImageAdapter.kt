@@ -1,4 +1,4 @@
-package adapter
+package com.example.lk_epk.adapter
 
 import android.view.LayoutInflater
 import android.view.View
