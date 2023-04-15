@@ -1,20 +1,23 @@
-package com.example.lk_epk.fragment
+package com.example. lk_epk.fragment
 
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
+import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.example.lk_epk.R
+import com.example.lk_epk.activity.MainActivity
 import com.example.lk_epk.adapter.BackDataAdapter
-import com.example.lk_epk.entity.BackData
+import com.example.lk_epk.util.AdapterPositionCallBack
 import com.example.lk_epk.util.BaseFragment
 import com.example.lk_epk.util.Constant
-import com.example.lk_epk.util.LogUtil
-import com.example.lk_epk.util.showToast
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
+import kotlinx.android.synthetic.main.dialog_removecalibration.*
 import kotlinx.android.synthetic.main.fragment_scan_backa.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
@@ -22,44 +25,84 @@ import java.io.File
 
 
 class ScanBackAFragment : BaseFragment() {
+    var selectIndex = 0
     private var pathList = ArrayList<String>()
-    private var dataList = ArrayList<BackData>()
-    private val adapter by lazy { BackDataAdapter(dataList) }
-    private val file by lazy { File(Environment.getExternalStorageDirectory().absolutePath + Constant.SCANABACK) }
-    private var startNum = 0
-    private var lastNum = 50
-    private var allNum = 0
+    private lateinit var dialog : MaterialDialog
+    private lateinit var adapter:BackDataAdapter
+    private lateinit var filePath:File
     override fun getLayout(): Int {
         return R.layout.fragment_scan_backa
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
-        val gridLayoutManager = GridLayoutManager(activityContext, 5)
-        recyclerView.layoutManager = gridLayoutManager
+        val layoutManager = LinearLayoutManager(activityContext)
+        recyclerView.layoutManager = layoutManager
 
         smartRefreshLayout.setRefreshHeader(ClassicsHeader(activityContext))
         smartRefreshLayout.setRefreshFooter(ClassicsFooter(activityContext)) //是否启用下拉刷新功能
         smartRefreshLayout.setOnRefreshListener {
-            startNum = 0
-            lastNum = 50
-            dataList.clear()
             getFileList()
         }
-        smartRefreshLayout.setOnLoadMoreListener {
-            if (allNum == lastNum) {
-                "暂无更多数据".showToast(activityContext)
-                smartRefreshLayout.finishLoadMore() //结束加载
-            } else if (lastNum < allNum) {
-                startNum = lastNum
-                lastNum += 50
-                if (lastNum >= allNum) {
-                    lastNum = allNum
-                }
-                getFileList()
+
+        imageView.setOnLongClickListener {
+            dialog = MaterialDialog(activityContext).show{
+                customView(	//自定义弹窗
+                    viewRes = R.layout.dialog_removecalibration,//自定义文件
+                    dialogWrapContent = true,	//让自定义宽度生效
+                    scrollable = true,			//让自定义宽高生效
+                    noVerticalPadding = true    //让自定义高度生效
+                )
+                cornerRadius(16f)  //圆角
             }
+            dialog.btnRemoveCancel.setOnClickListener{
+                dialog.dismiss()
+            }
+            dialog.btnRemoveSure.setOnClickListener{
+                if (selectIndex==0){
+                    //如果只有一条数据删除后显示暂无数据图片，隐藏listview
+                    if(pathList.size==1){
+                        val file = File("${filePath}/${pathList[selectIndex]}")
+                        file.delete()
+                        pathList.removeAt(selectIndex)
+                        linNoData.visibility = View.VISIBLE
+                        linData.visibility = View.GONE
+                    }else{
+                        val file = File("${filePath}/${pathList[selectIndex]}")
+                        file.delete()
+                        pathList.removeAt(selectIndex)
+                        adapter.notifyDataSetChanged()
+                        var path = "${filePath}/${pathList[selectIndex]}"
+                        setBitmap(path)
+                    }
+                }else if (selectIndex==pathList.size-1){
+                    val file = File("${filePath}/${pathList[selectIndex]}")
+                    file.delete()
+                    pathList.removeAt(selectIndex)
+                    --selectIndex
+                    adapter.setSelectIndex(selectIndex)
+                    adapter.notifyDataSetChanged()
+                    var path = "${filePath}/${pathList[selectIndex]}"
+                    setBitmap(path)
+                }else if (selectIndex<pathList.size-1&&selectIndex>0){
+                    val file = File("${filePath}/${pathList[selectIndex]}")
+                    file.delete()
+                    pathList.removeAt(selectIndex)
+                    --selectIndex
+                    adapter.setSelectIndex(selectIndex)
+                    adapter.notifyDataSetChanged()
+                    var path = "${filePath}/${pathList[selectIndex]}"
+                    setBitmap(path)
+                }
+                dialog.dismiss()
+            }
+            true
         }
 
+        ivRef.setOnClickListener {
+            getFileList()
+            true
+        }
     }
 
     //初始化数据
@@ -72,30 +115,36 @@ class ScanBackAFragment : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getFileList() {
         /**将文件夹下所有文件名存入数组*/
-        pathList = file.list().toList().reversed() as ArrayList<String>
-        allNum = pathList.size
-        if (pathList.isEmpty()) {
-            "暂无图片".showToast(activityContext)
-        } else {
-            /**遍历数组*/
-            if (allNum > 50) {
-                for (i in startNum until lastNum) {
-                    //val bitmap = BitmapFactory.decodeFile("${file}/${pathList[i]}")
-                    var path = "${file}/${pathList[i]}"
-                    makeData(i,path)
-                }
-            }else{
-                for (i in startNum until pathList.size) {
-                    var path = "${file}/${pathList[i]}"
-                    makeData(i,path)
-                }
-                lastNum = allNum
-                smartRefreshLayout.finishLoadMore() //结束加载
+        filePath = File(Environment.getExternalStorageDirectory().absolutePath + Constant.SCANABACK)
+        if (filePath.list().isEmpty()){
+            linNoData.visibility = View.VISIBLE
+            linData.visibility = View.GONE
+        }else{
+            if(filePath.list().size>1){
+                pathList = filePath.list().toList().reversed() as ArrayList<String>
+            }else if (filePath.list().size==1){
+                pathList.clear()
+                pathList.add(filePath.list()[0])
             }
+            linNoData.visibility = View.GONE
+            linData.visibility = View.VISIBLE
+            adapter = BackDataAdapter(pathList, selectIndex, activity as MainActivity, object :AdapterPositionCallBack{
+                override fun backPosition(index: Int) {
+                    selectIndex = index
+                    var path = "${filePath}/${pathList[index]}"
+                    setBitmap(path)
+                }
+            })
+            recyclerView.adapter = adapter
+            var path = "${filePath}/${pathList[selectIndex]}"
+            setBitmap(path)
+            adapter.notifyDataSetChanged()
+            smartRefreshLayout?.finishLoadMore()
+            smartRefreshLayout?.finishRefresh()
         }
     }
 
-    private fun makeData(i:Int, path:String){
+    private fun setBitmap(path:String){
         Luban.with(activityContext)
             .load(path)
             .ignoreBy(100)
@@ -108,22 +157,16 @@ class ScanBackAFragment : BaseFragment() {
                 }
 
                 override fun onSuccess(file: File) {
-                    val bitmap = BitmapFactory.decodeFile(file.path)
-                    var backData = BackData(pathList[i], bitmap)
-                    dataList.add(backData)
-                    recyclerView.adapter = adapter
-                    adapter.notifyDataSetChanged()
+                    val bitmap = BitmapFactory.decodeFile(path)
+                    imageView.setImageBitmap(bitmap)
+                    tvFileName.text = pathList[selectIndex]
                 }
 
                 override fun onError(e: Throwable) {
 
                 }
             }).launch()
-        smartRefreshLayout?.finishLoadMore()
-        smartRefreshLayout?.finishRefresh()
     }
-
-
     //服务器返回数据
     override fun messageResponse(str: String) {
         TODO("Not yet implemented")

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -14,11 +15,14 @@ import com.example.lk_epk.R
 import com.example.lk_epk.fragment.*
 import com.example.lk_epk.util.BaseActivity
 import com.example.lk_epk.util.BaseFragment
+import com.example.lk_epk.util.Constant
 import com.example.lk_epk.util.showToast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.permissionx.guolindev.PermissionX
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_scan_backa.*
+import java.io.File
 
 class MainActivity : BaseActivity(), View.OnClickListener {
     private lateinit var selectFragment: BaseFragment
@@ -26,6 +30,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTagList = arrayOf("ScanAFragment", "ScanBFragment", "ScanBackAFragment", "AlignFragment", "AlignFragment")
     private lateinit var currentFragmen: Fragment
+    private val file by lazy { File(Environment.getExternalStorageDirectory().absolutePath + Constant.SCANABACK) }
 
     companion object {
         fun actionStart(context: Context) {
@@ -36,6 +41,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if(!file.exists()){//如果文件不存在 以目录形式创建
+            file.mkdir()
+        }
+
         requestPermission()
         bv_battery.BatteryView()
         bv_battery.setProgress(50)
@@ -50,9 +60,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         })
         mFragmentList.add(0, ScanAFragment())
         mFragmentList.add(1, ScanBFragment())
-        mFragmentList.add(2, ScanBackAFragment())
-        mFragmentList.add(3, ScanBackBFragment())
-        mFragmentList.add(4, AlignFragment())
+        mFragmentList.add(2, AlignFragment())
+        mFragmentList.add(3, ScanBackAFragment())
+        mFragmentList.add(4, ScanBackBFragment())
         currentFragmen = mFragmentList[0];
         // 初始化首次进入时的Fragment
         fragmentManager = supportFragmentManager;

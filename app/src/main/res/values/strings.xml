@@ -30,6 +30,9 @@
     <string name="remove_sure">您确定要删除此项数据吗？</string>
     <string name="basisc_no_remove">基础材料及声速不可删除</string>
     <string name="remove_success">删除成功</string>
+    <string name="is_first">已是第一张</string>
+    <string name="is_last">已是最后一张</string>
+    <string name="no_data">暂无数据,点击上图刷新</string>
 
     <string name="project_button">功能按键</string>
     <string name="device_param">设备参数</string>
