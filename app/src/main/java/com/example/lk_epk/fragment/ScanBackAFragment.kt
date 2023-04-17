@@ -17,8 +17,14 @@ import com.example.lk_epk.util.BaseFragment
 import com.example.lk_epk.util.Constant
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
+import kotlinx.android.synthetic.main.dialog_numedittext.*
 import kotlinx.android.synthetic.main.dialog_removecalibration.*
+import kotlinx.android.synthetic.main.dialog_stringedittext.*
 import kotlinx.android.synthetic.main.fragment_scan_backa.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -99,8 +105,22 @@ class ScanBackAFragment : BaseFragment() {
             true
         }
 
-        ivRef.setOnClickListener {
+        floButton.setOnClickListener {
+            dialog = MaterialDialog(activityContext).show{
+                customView(	//自定义弹窗
+                    viewRes = R.layout.dialog_projress,//自定义文件
+                    dialogWrapContent = true,	//让自定义宽度生效
+                    scrollable = true,			//让自定义宽高生效
+                    noVerticalPadding = true    //让自定义高度生效
+                )
+                cornerRadius(16f)  //圆角
+            }
             getFileList()
+            CoroutineScope(Dispatchers.Main)
+                .launch {
+                    delay(1500) // 延时1秒
+                    dialog.dismiss()
+                }
             true
         }
     }

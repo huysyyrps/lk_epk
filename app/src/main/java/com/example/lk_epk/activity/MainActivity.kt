@@ -60,9 +60,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         })
         mFragmentList.add(0, ScanAFragment())
         mFragmentList.add(1, ScanBFragment())
-        mFragmentList.add(2, AlignFragment())
-        mFragmentList.add(3, ScanBackAFragment())
-        mFragmentList.add(4, ScanBackBFragment())
+        mFragmentList.add(2, ScanBackAFragment())
+        mFragmentList.add(3, ScanBackBFragment())
+        mFragmentList.add(4, AlignFragment())
         currentFragmen = mFragmentList[0];
         // 初始化首次进入时的Fragment
         fragmentManager = supportFragmentManager;

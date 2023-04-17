@@ -7,24 +7,34 @@
         android:background="@color/theme_back_color"
         android:orientation="horizontal"
         tools:context=".activity.MainActivity">
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/linNoData"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_height="match_parent">
         <ImageView
                 android:id="@+id/ivRef"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
+                android:layout_centerInParent="true"
                 android:src="@drawable/ic_nodata"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/ivRef"
+                android:layout_centerHorizontal="true"
                 android:text="@string/no_data"/>
+       <com.google.android.material.floatingactionbutton.FloatingActionButton
+               android:id="@+id/floButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentRight="true"
+               android:layout_margin="5dp"
+               android:backgroundTint="@color/theme_color"
+               android:src="@drawable/ic_refus"/>
 
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
             android:id="@+id/linData"
             android:layout_width="match_parent"
