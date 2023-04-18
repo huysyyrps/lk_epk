@@ -21,7 +21,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.permissionx.guolindev.PermissionX
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_scan_backa.*
 import java.io.File
 
 class MainActivity : BaseActivity(), View.OnClickListener {

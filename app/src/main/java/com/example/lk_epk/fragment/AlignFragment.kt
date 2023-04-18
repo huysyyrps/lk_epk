@@ -32,7 +32,7 @@ class AlignFragment : BaseFragment(), View.OnClickListener {
         return R.layout.fragment_align
     }
 
-    override fun initView() {
+    override fun initView(view: View) {
         btnAddCalibration.setOnClickListener(this)
         //组装数据
         makeData()
@@ -92,9 +92,9 @@ class AlignFragment : BaseFragment(), View.OnClickListener {
     }
 
     //服务器返回数据
-    override fun messageResponse(str: String) {
-        TODO("Not yet implemented")
-    }
+//    override fun messageResponse(str: String) {
+//        TODO("Not yet implemented")
+//    }
 
     override fun onClick(v: View?) {
         when(v?.id){

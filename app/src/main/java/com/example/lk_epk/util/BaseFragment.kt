@@ -11,8 +11,8 @@ import com.example.lk_epk.tcp.NettyClientListener
 import com.example.lk_epk.tcp.NettyTcpClient
 import com.example.lk_epk.tcp.SocketBack
 
-
-abstract class BaseFragment : Fragment(), NettyClientListener<String>, SocketBack {
+//, SocketBack
+abstract class BaseFragment : Fragment(), NettyClientListener<String> {
 //    lateinit var manager: IConnectionManager
     lateinit var activityContext: Context
     private var ip: String = "172.16.20.5"
@@ -35,12 +35,11 @@ abstract class BaseFragment : Fragment(), NettyClientListener<String>, SocketBac
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //初始化控件
-        initView()
-        initData()
-
         //链接socket
         connectSocket()
+        //初始化控件
+        initView(view)
+        initData()
     }
 
     fun getActivityContext(context: Context) {
@@ -75,7 +74,7 @@ abstract class BaseFragment : Fragment(), NettyClientListener<String>, SocketBac
 
     override fun onMessageResponseClient(msg: String, index: Int) {
         Log.d(TAG, "onMessageResponse:$msg")
-        messageResponse(msg)
+//        messageResponse(msg)
     }
 
     override fun onClientStatusConnectChanged(statusCode: Int, index: Int) {
@@ -93,6 +92,6 @@ abstract class BaseFragment : Fragment(), NettyClientListener<String>, SocketBac
 
     //初始化布局
     abstract fun getLayout(): Int
-    abstract fun initView()
+    abstract fun initView(view: View)
     abstract fun initData()
 }

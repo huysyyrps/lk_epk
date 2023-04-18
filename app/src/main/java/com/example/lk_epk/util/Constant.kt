@@ -25,4 +25,5 @@ object Constant {
 
     const val BASE_URL = "http://192.168.43.251:8080"
     const val SCANABACK = "/LKAScan"
+    const val SCANBBACK = "/LKBScan"
 }
