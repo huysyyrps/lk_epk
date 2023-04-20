@@ -3,6 +3,7 @@ package com.example.lk_epk.util
 import android.view.MotionEvent
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
+import com.example.lk_epk.view.BaseLineChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -13,7 +14,7 @@ import com.github.mikephil.charting.listener.OnChartGestureListener
 
 
 object LineChartSetting {
-    fun SettingLineChart(linechar:LineChart){
+    fun SettingLineChart(linechar:BaseLineChart){
 //        linechar.setPinchZoom(false)//双指缩放
 //        linechar.setScaleEnabled(true) // 两个轴上的缩放,X,Y分别默认为true
 //        linechar.isScaleXEnabled = true // X轴上的缩放,默认true
@@ -36,7 +37,7 @@ object LineChartSetting {
         linechar.setPinchZoom(false) // X,Y轴同时缩放，false则X,Y轴单独缩放,默认false
 //        linechar.isDragEnabled = true// 是否可以拖拽
         linechar.isScaleXEnabled = true
-//        linechar.setTouchEnabled(true) // 设置是否可以触摸
+        linechar.setTouchEnabled(false) // 设置是否可以触摸
         linechar.description = null// 数据描述
 //        linechar.isDoubleTapToZoomEnabled = false
         linechar.viewPortHandler.setMaximumScaleX(30.0f)//限制X轴放大限制
@@ -48,6 +49,9 @@ object LineChartSetting {
         linechar.extraRightOffset = 0.0f
         linechar.extraBottomOffset = 5.0f
         linechar.minOffset = 0.0f
+        // 当前统计图表中最多在x轴坐标线上显示的总量
+        linechar.setVisibleXRangeMaximum(300f);
+        linechar.moveViewToX(300f);
 
         //X轴
         val xAxis = linechar.xAxis

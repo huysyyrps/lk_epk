@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.*
@@ -22,6 +23,7 @@ import com.example.lk_epk.tcp.MessageStateListener
 import com.example.lk_epk.tcp.NettyClientListener
 import com.example.lk_epk.tcp.NettyTcpClient
 import com.example.lk_epk.view.BaseButton
+import com.example.lk_epk.view.BaseLineChart
 import com.fphoenixcorneae.widget.rocker.RockerView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -33,7 +35,7 @@ import kotlinx.android.synthetic.main.dialog_numedittext.*
 import kotlinx.android.synthetic.main.dialog_stringedittext.*
 import java.util.*
 
-class BtnClient : View.OnClickListener, NettyClientListener<String> {
+class ScanUtil : View.OnClickListener, NettyClientListener<String> {
 
     private lateinit var dialog : MaterialDialog
     private lateinit var btnTag : String
@@ -55,7 +57,7 @@ class BtnClient : View.OnClickListener, NettyClientListener<String> {
     private lateinit var swAutoAdd : Switch
     private lateinit var seekbar : SeekBar
     private lateinit var tvSeekBar : TextView
-    private lateinit var lineChart : LineChart
+    private lateinit var lineChart : BaseLineChart
     private lateinit var webView : WebView
     private lateinit var rockerView : RockerView
     private var landList: ArrayList<Entry> = ArrayList()
@@ -95,7 +97,7 @@ class BtnClient : View.OnClickListener, NettyClientListener<String> {
         btnSave = view.findViewById<BaseButton>(R.id.btnSave)
         btnSave.setOnClickListener(this)
         //波形图
-        lineChart = view.findViewById<LineChart>(R.id.lineChart)
+        lineChart = view.findViewById<BaseLineChart>(R.id.lineChart)
         LineChartSetting.SettingLineChart(lineChart)
         //自增益开关
         swAutoAdd = view.findViewById<Switch>(R.id.swAutoAdd)
@@ -152,6 +154,11 @@ class BtnClient : View.OnClickListener, NettyClientListener<String> {
             }
 
         initData()
+
+        var width = lineChart.width
+        var height = lineChart.height
+        lineChart.getSize(width,height)
+
     }
 
     override fun onClick(v: View?) {
@@ -318,34 +325,74 @@ class BtnClient : View.OnClickListener, NettyClientListener<String> {
 
     fun initData() {
         //延时操作模仿数据回传
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
+        if (currentFragment=="ScanAFragment"){
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
 //                makeData()
-                landList.clear()
-                landList.add(Entry(0.toFloat(), 100.toFloat()))
-                landList.add(Entry(1.toFloat(), 2.toFloat()))
-                landList.add(Entry(2.toFloat(), 90.toFloat()))
-                landList.add(Entry(3.toFloat(), 2.toFloat()))
-                for(i in 4..300){
-                    landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
-                }
+                    landList.clear()
+                    landList.add(Entry(0.toFloat(), 100.toFloat()))
+                    landList.add(Entry(1.toFloat(), 2.toFloat()))
+                    landList.add(Entry(2.toFloat(), 90.toFloat()))
+                    landList.add(Entry(3.toFloat(), 2.toFloat()))
+                    var rangeAdd = btnRangeAdd.text
+                    if (rangeAdd=="1X"){
+                        for(i in 4..300){
+                            landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
+                        }
+                    }else if (rangeAdd=="2X"){
+                        for(i in 4..200){
+                            landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
+                        }
+                    }else if (rangeAdd=="3X"){
+                        for(i in 4..100){
+                            landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
+                        }
+                    }
 
-                lineDataSet = LineDataSet(landList, "A扫")
-                //不绘制数据
-                lineDataSet.setDrawValues(false)
-                //不绘制圆形指示器
-                lineDataSet.setDrawCircles(false)
-                //线模式为圆滑曲线（默认折线）
-                lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-                lineDataSet.setColor(context.resources.getColor(R.color.theme_color))
-                //将数据集添加到数据 ChartData 中
-                val lineData = LineData(lineDataSet)
-                //将数据添加到图表中
-                lineChart.setData(lineData)
-                lineChart.notifyDataSetChanged()
-                lineChart.invalidate()
-            }
-        }, 0,150)
+                    lineDataSet = LineDataSet(landList, "A扫")
+                    //不绘制数据
+                    lineDataSet.setDrawValues(false)
+                    //不绘制圆形指示器
+                    lineDataSet.setDrawCircles(false)
+                    //线模式为圆滑曲线（默认折线）
+                    lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+                    lineDataSet.setColor(context.resources.getColor(R.color.theme_color))
+                    //将数据集添加到数据 ChartData 中
+                    val lineData = LineData(lineDataSet)
+                    //将数据添加到图表中
+                    lineChart.setData(lineData)
+                    lineChart.notifyDataSetChanged()
+//                    // 当前统计图表中最多在x轴坐标线上显示的总量
+//                    lineChart.setVisibleXRangeMaximum(100f);
+//                    lineChart.moveViewToX(100f);
+                    lineChart.invalidate()
+
+                }
+            }, 0,150)
+        }else if (currentFragment=="ScanBFragment"){
+            var i = 0
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
+                        landList.add(Entry(i.toFloat(), 22.2.toFloat()))
+                        lineDataSet = LineDataSet(landList, "A扫")
+                        //不绘制数据
+                        lineDataSet.setDrawValues(false)
+                        //不绘制圆形指示器
+                        lineDataSet.setDrawCircles(false)
+                        //线模式为圆滑曲线（默认折线）
+                        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+                        lineDataSet.setColor(context.resources.getColor(R.color.theme_color))
+                        //将数据集添加到数据 ChartData 中
+                        val lineData = LineData(lineDataSet)
+                        //将数据添加到图表中
+                        lineChart.setData(lineData)
+                        lineChart.notifyDataSetChanged()
+                        lineChart.invalidate()
+                    i++
+                }
+            }, 0,100)
+        }
+
     }
 
     //发送数据

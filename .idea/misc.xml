@@ -32,8 +32,10 @@
         <entry key="..\:/LK_EPK/app/src/main/res/layout/dialog_stringedittext.xml" value="0.2942708333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_align.xml" value="0.2989583333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_fun.xml" value="0.25" />
+        <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan.xml" value="0.30052083333333335" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan_a.xml" value="0.23645833333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan_b.xml" value="0.2604166666666667" />
+        <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan_back.xml" value="0.30052083333333335" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan_backa.xml" value="0.2989583333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/fragment_scan_backb.xml" value="0.2989583333333333" />
         <entry key="..\:/LK_EPK/app/src/main/res/layout/loading.xml" value="0.2890625" />
