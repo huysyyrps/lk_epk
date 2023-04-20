@@ -33,7 +33,7 @@ class BaseLineChart : LineChart {
         paint.isAntiAlias = true
         paint.strokeWidth = 3.0f
     }
-    public fun getSize(width: Int, height: Int) {
+    fun getSize(width: Int, height: Int) {
         viewWidth = width
         viewHeight = height
     }
