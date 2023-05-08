@@ -31,10 +31,6 @@
                 android:name=".activity.MainActivity"
                 android:exported="true"
                 android:screenOrientation="landscape"/>
-        <activity
-                android:name=".activity.BigBitmapActivity"
-                android:exported="true"
-                android:screenOrientation="landscape" />
     </application>
 
 </manifest>

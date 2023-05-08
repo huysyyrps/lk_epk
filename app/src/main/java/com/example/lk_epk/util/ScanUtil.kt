@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.dialog_item_header.*
 import kotlinx.android.synthetic.main.dialog_numedittext.*
 import kotlinx.android.synthetic.main.dialog_stringedittext.*
 import java.util.*
+import kotlin.properties.Delegates
 
 class ScanUtil : View.OnClickListener, NettyClientListener<String> {
 
@@ -61,8 +62,13 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
     private lateinit var webView : WebView
     private lateinit var rockerView : RockerView
     private var landList: ArrayList<Entry> = ArrayList()
+    private var makeList: ArrayList<Entry> = ArrayList()
     private lateinit var lineDataSet:LineDataSet
     private lateinit var currentFragment : String
+    private var gateX1 by Delegates.notNull<Float>()
+    private var gateY1 by Delegates.notNull<Float>()
+    private var width by Delegates.notNull<Int>()
+    private var height by Delegates.notNull<Int>()
     private val TAG = "ScanFragment"
 
     fun btnSetClient(activity: FragmentActivity, view: View, tcpClient:NettyTcpClient, tag: String){
@@ -154,11 +160,6 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
             }
 
         initData()
-
-        var width = lineChart.width
-        var height = lineChart.height
-        lineChart.getSize(width,height)
-
     }
 
     override fun onClick(v: View?) {
@@ -259,6 +260,23 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
                     Constant.GATE -> {
                         btnGate?.text = data
                         sendData("1",data)
+                        when (btnGate?.text) {
+                            "单闸门" -> {
+                                if (currentFragment=="ScanAFragment"){
+                                    gateX1 = (35*width/300).toFloat()
+                                    gateY1 = landList[35].y*height/100
+                                    lineChart.getTag(currentFragment)
+                                    lineChart.getGate(gateX1,height-gateY1)
+                                }
+                            }
+                            "双闸门" -> {
+
+                            }
+                            "自动" -> {
+                                lineChart.getGate(0f,0f)
+                            }
+                        }
+
                     }
                     Constant.LEAVE -> {
                         btnLeave.text = data
@@ -325,28 +343,38 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
 
     fun initData() {
         //延时操作模仿数据回传
+        width = lineChart.width
+        height = lineChart.height
         if (currentFragment=="ScanAFragment"){
+            lineChart.getTag("ScanAFragment")
             Timer().schedule(object : TimerTask() {
                 override fun run() {
 //                makeData()
-                    landList.clear()
-                    landList.add(Entry(0.toFloat(), 100.toFloat()))
-                    landList.add(Entry(1.toFloat(), 2.toFloat()))
-                    landList.add(Entry(2.toFloat(), 90.toFloat()))
-                    landList.add(Entry(3.toFloat(), 2.toFloat()))
+                    makeList.clear()
+                    makeList.add(Entry(0.toFloat(), 100.toFloat()))
+                    makeList.add(Entry(1.toFloat(), 2.toFloat()))
+                    makeList.add(Entry(2.toFloat(), 90.toFloat()))
+                    makeList.add(Entry(3.toFloat(), 2.toFloat()))
                     var rangeAdd = btnRangeAdd.text
                     if (rangeAdd=="1X"){
                         for(i in 4..300){
-                            landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
+                            makeList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
                         }
                     }else if (rangeAdd=="2X"){
                         for(i in 4..200){
-                            landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
+                            makeList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
                         }
                     }else if (rangeAdd=="3X"){
                         for(i in 4..100){
-                            landList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
+                            makeList.add(Entry(i.toFloat(), ((30..50).random()).toFloat()))
                         }
+                    }
+                    if(landList.size==makeList.size){
+                        for (i in 0 until makeList.size){
+                            landList[i] = makeList[i]
+                        }
+                    }else{
+                        landList.addAll(makeList)
                     }
 
                     lineDataSet = LineDataSet(landList, "A扫")
@@ -367,9 +395,13 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
 //                    lineChart.moveViewToX(100f);
                     lineChart.invalidate()
 
+                    var startX1 = 8*width/300
+                    var startY1 = landList[8].y*height/100
+                    lineChart.getSize(startX1.toFloat(),height-startY1)
                 }
             }, 0,150)
         }else if (currentFragment=="ScanBFragment"){
+            lineChart.getTag("ScanBFragment")
             var i = 0
             Timer().schedule(object : TimerTask() {
                 override fun run() {

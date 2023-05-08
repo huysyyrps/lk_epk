@@ -61,12 +61,12 @@ object LineChartSetting {
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.axisMinimum(0.0f);
         xAxis.axisMaximum(80.0f);
-//        xAxis.setLabelCount(8, true);
+//        xAxis.isEnabled = false//是否显示X轴
         xAxis.setAvoidFirstLastClipping(true) //图表将避免第一个和最后一个标签条目被减掉在图表或屏幕的边缘
 
         //左侧Y轴
         val leftYAxis = linechar.axisLeft
-        leftYAxis.textColor = MyApplication.context.resources.getColor(R.color.theme_color)
+        leftYAxis.textColor = MyApplication.context.resources.getColor(R.color.red)
         leftYAxis.gridColor = MyApplication.context.resources.getColor(R.color.line)//网格颜色
         leftYAxis.axisLineColor = MyApplication.context.resources.getColor(R.color.theme_color)//轴线颜色
         //leftYAxis.spaceBottom = 10f // 最小值距离底部比例。默认10，y轴独有
@@ -77,7 +77,7 @@ object LineChartSetting {
         leftYAxis.granularity = 1.0f;//设置Y轴坐标之间的最小间隔（因为此图有缩放功能，X轴,Y轴可设置可缩放）
         leftYAxis.setDrawGridLines(false)
 ////        yLeftAxis.axisMinimum = -30f
-        //leftYAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART); Y轴标签显示位置
+        leftYAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART); //Y轴标签显示位置
 
 
         //右侧Y轴
