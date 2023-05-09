@@ -71,7 +71,7 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
     private var height by Delegates.notNull<Int>()
     private val TAG = "ScanFragment"
 
-    fun btnSetClient(activity: FragmentActivity, view: View, tcpClient:NettyTcpClient, tag: String){
+    fun btnSetClient(activity: FragmentActivity, view: View, tcpClient:NettyTcpClient, tag:String){
         context = activity
         nettyTcpClient = tcpClient
         currentFragment = tag
@@ -158,7 +158,6 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
             .setOnSteeringWheelChangedListener { linearSpeed, angleSpeed ->
                 Log.e("RockerView", "linearSpeed: $linearSpeed, angleSpeed: $angleSpeed")
             }
-
         initData()
     }
 
@@ -262,12 +261,9 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
                         sendData("1",data)
                         when (btnGate?.text) {
                             "单闸门" -> {
-                                if (currentFragment=="ScanAFragment"){
-                                    gateX1 = (35*width/300).toFloat()
-                                    gateY1 = landList[35].y*height/100
-                                    lineChart.getTag(currentFragment)
-                                    lineChart.getGate(gateX1,height-gateY1)
-                                }
+                                gateX1 = (35*width/300).toFloat()
+                                gateY1 = landList[35].y*height/100
+                                lineChart.getGate(gateX1,height-gateY1)
                             }
                             "双闸门" -> {
 
@@ -343,10 +339,7 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
 
     fun initData() {
         //延时操作模仿数据回传
-        width = lineChart.width
-        height = lineChart.height
         if (currentFragment=="ScanAFragment"){
-            lineChart.getTag("ScanAFragment")
             Timer().schedule(object : TimerTask() {
                 override fun run() {
 //                makeData()
@@ -395,31 +388,34 @@ class ScanUtil : View.OnClickListener, NettyClientListener<String> {
 //                    lineChart.moveViewToX(100f);
                     lineChart.invalidate()
 
+                    width = lineChart.width
+                    height = lineChart.height
                     var startX1 = 8*width/300
                     var startY1 = landList[8].y*height/100
+                    LogUtil.e("XXX","${startX1}+${startY1}")
                     lineChart.getSize(startX1.toFloat(),height-startY1)
                 }
             }, 0,150)
         }else if (currentFragment=="ScanBFragment"){
-            lineChart.getTag("ScanBFragment")
             var i = 0
             Timer().schedule(object : TimerTask() {
                 override fun run() {
-                        landList.add(Entry(i.toFloat(), 22.2.toFloat()))
-                        lineDataSet = LineDataSet(landList, "A扫")
-                        //不绘制数据
-                        lineDataSet.setDrawValues(false)
-                        //不绘制圆形指示器
-                        lineDataSet.setDrawCircles(false)
-                        //线模式为圆滑曲线（默认折线）
-                        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-                        lineDataSet.setColor(context.resources.getColor(R.color.theme_color))
-                        //将数据集添加到数据 ChartData 中
-                        val lineData = LineData(lineDataSet)
-                        //将数据添加到图表中
-                        lineChart.setData(lineData)
-                        lineChart.notifyDataSetChanged()
-                        lineChart.invalidate()
+                    landList.add(Entry(i.toFloat(), 22.2.toFloat()))
+                    lineDataSet = LineDataSet(landList, "A扫")
+                    //不绘制数据
+                    lineDataSet.setDrawValues(false)
+                    //不绘制圆形指示器
+                    lineDataSet.setDrawCircles(false)
+                    //线模式为圆滑曲线（默认折线）
+                    lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+                    lineDataSet.setColor(context.resources.getColor(R.color.theme_color))
+                    //将数据集添加到数据 ChartData 中
+                    val lineData = LineData(lineDataSet)
+                    //将数据添加到图表中
+                    lineChart.setData(lineData)
+                    lineChart.notifyDataSetChanged()
+                    lineChart.invalidate()
+                    lineChart.getSize(0F,0F)
                     i++
                 }
             }, 0,100)

@@ -32,7 +32,9 @@
                     android:background="@color/red" />
         </RelativeLayout>
 
-        <LinearLayout style="@style/linlayout">
+        <LinearLayout
+                android:id="@+id/linFirstLine"
+                style="@style/linlayout">
 
             <LinearLayout style="@style/linlayin">
 

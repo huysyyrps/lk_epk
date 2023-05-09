@@ -13,10 +13,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.lk_epk.MyApplication
 import com.example.lk_epk.R
 import com.example.lk_epk.fragment.*
-import com.example.lk_epk.util.BaseActivity
-import com.example.lk_epk.util.BaseFragment
-import com.example.lk_epk.util.Constant
-import com.example.lk_epk.util.showToast
+import com.example.lk_epk.util.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.permissionx.guolindev.PermissionX
@@ -101,15 +98,15 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun tabChange(tab: TabLayout.Tab) {
         val position = tab.position
         if (position == 0) {
-            switchFragment(mFragmentList[0], mFragmentTagList[0]);
+            switchFragment(mFragmentList[0], mFragmentTagList[0])
         } else if (position == 1) {
-            switchFragment(mFragmentList[1], mFragmentTagList[1]);
+            switchFragment(mFragmentList[1], mFragmentTagList[1])
         } else if (position == 2) {
-            switchFragment(mFragmentList[2], mFragmentTagList[2]);
+            switchFragment(mFragmentList[2], mFragmentTagList[2])
         } else if (position == 3) {
-            switchFragment(mFragmentList[3], mFragmentTagList[3]);
+            switchFragment(mFragmentList[3], mFragmentTagList[3])
         } else if (position == 4) {
-            switchFragment(mFragmentList[4], mFragmentTagList[4]);
+            switchFragment(mFragmentList[4], mFragmentTagList[4])
         }
     }
 
@@ -120,14 +117,15 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         if (currentFragmen !== fragment) {
             val transaction = fragmentManager.beginTransaction()
-            if (!fragment.isAdded) {
-                // 没有添加过:
-                // 隐藏当前的，添加新的，显示新的
-                transaction.hide(currentFragmen).add(R.id.flFragment, fragment, tag).show(fragment)
-            } else {
-                // 隐藏当前的，显示新的
-                transaction.hide(currentFragmen).show(fragment)
-            }
+//            if (!fragment.isAdded) {
+//                // 没有添加过:
+//                // 隐藏当前的，添加新的，显示新的
+//                transaction.hide(currentFragmen).add(R.id.flFragment, fragment, tag).show(fragment)
+//            } else {
+//                // 隐藏当前的，显示新的
+//                transaction.hide(currentFragmen).show(fragment)
+//            }
+            transaction.replace(R.id.flFragment, fragment, tag)
             currentFragmen = fragment
             transaction.commitAllowingStateLoss()
         }

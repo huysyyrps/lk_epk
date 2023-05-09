@@ -1,20 +1,18 @@
 package com.example.lk_epk.fragment
 
+import android.view.LayoutInflater
 import android.view.View
 import com.example.lk_epk.R
 import com.example.lk_epk.util.*
 
 class ScanAFragment : BaseFragment() {
 
-    companion object{
-        private const val TAG = "ScanAFragment"
-    }
     override fun getLayout(): Int {
         return R.layout.fragment_scan
     }
 
     override fun initView(view: View) {
-        ScanUtil().btnSetClient(requireActivity(), view, nettyTcpClient,"ScanAFragment")
+        ScanUtil().btnSetClient(requireActivity(), view, nettyTcpClient, "ScanAFragment")
     }
 
     //初始化数据

@@ -3,6 +3,7 @@ package com.example.lk_epk.fragment
 import android.view.View
 import com.example.lk_epk.R
 import com.example.lk_epk.util.*
+import kotlinx.android.synthetic.main.scan_right.*
 
 
 class ScanBFragment : BaseFragment(){
@@ -15,7 +16,8 @@ class ScanBFragment : BaseFragment(){
     }
 
     override fun initView(view: View) {
-        ScanUtil().btnSetClient(requireActivity(), view, nettyTcpClient,"ScanBFragment")
+        linFirstLine.visibility = View.GONE
+        ScanUtil().btnSetClient(requireActivity(), view, nettyTcpClient,  "ScanBFragment")
     }
 
     //初始化数据
